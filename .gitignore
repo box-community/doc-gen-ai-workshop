@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# Box projetc stuff
+.DS_Store
+.box_token_storage
+.python-version
+
 # Distribution / packaging
 .Python
 build/
