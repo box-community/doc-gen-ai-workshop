@@ -1,25 +1,26 @@
 from src.client import AppConfig
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 
 
-    
-
 def test_box_app_config_configuration():
-    """ Should return a valid CCGConfig object from the environment variables """
+    """Should return a valid CCGConfig object from the environment variables"""
     ap = AppConfig()
     assert ap.conf.client_id == os.getenv("BOX_CLIENT_ID")
     assert ap.conf.client_secret == os.getenv("BOX_CLIENT_SECRET")
     assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
     assert ap.conf.user_id == os.getenv("BOX_USER_ID")
-    
+
+
 def test_box_app_config_auth():
     """Should return a valid BoxCCGAuth object from the environment variables"""
     ap = AppConfig()
-    assert ap.auth.subject_type =="user"
-    assert ap.auth.subject_id==os.getenv("BOX_USER_ID")
+    assert ap.auth.subject_type == "user"
+    assert ap.auth.subject_id == os.getenv("BOX_USER_ID")
     assert ap.auth.retrieve_token() is not None
+
 
 def test_box_app_config_client():
     """Should return a BocClient"""
@@ -27,3 +28,8 @@ def test_box_app_config_client():
     client = ap.get_box_client()
     me = client.users.get_user_me()
     assert me.id == os.getenv("BOX_USER_ID")
+
+
+def test_box_app_config_write_env_file():
+    """Should write the .env file with the configurations from the AppConfig object"""
+    assert False
