@@ -91,3 +91,20 @@ def get_ai_producer_recommendations(
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
+
+
+def get_ai_screen_writer(client: BoxClient, box_file: File) -> AiResponseFull:
+    """
+    Get AI screen writer of a Box file.
+    """
+    mode = CreateAiAskMode.SINGLE_ITEM_QA
+    prompt = (
+        "read this movie script and provide me information on the screen writer "
+        "include other scrips the screen writer has written "
+        "and a summary of accomplishments. "
+        "If the screen writer does have movies being produced, "
+        "include a bullet list summary of grossed revenue for each movie on a separate paragraph. "
+        "On another paragraph, include a bullet list of the companies the screen writer has worked with. "
+    )
+    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+    return client.ai.create_ai_ask(mode, prompt, [item])
