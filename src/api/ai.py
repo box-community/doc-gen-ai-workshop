@@ -46,3 +46,16 @@ def get_ai_location_information(client: BoxClient, box_file: File) -> AiResponse
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
+
+
+def get_ai_prop_list(client: BoxClient, box_file: File) -> AiResponseFull:
+    """
+    Get AI prop list of a Box file.
+    """
+    mode = CreateAiAskMode.SINGLE_ITEM_QA
+    prompt = (
+        "read this movie script and give me a list of props "
+        "with one sentence description for each prop "
+    )
+    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+    return client.ai.create_ai_ask(mode, prompt, [item])

@@ -6,6 +6,7 @@ from src.api import (
     get_ai_character_list,
     get_ai_location_information,
     get_ai_plot_summary,
+    get_ai_prop_list,
 )
 
 logger = logging.getLogger(__name__)
@@ -43,4 +44,15 @@ def test_api_ai_location_information(box_client: BoxClient, test_sample_file: Fi
     )
 
     assert ai_response.answer is not None
-    print(ai_response.answer)
+    # print(ai_response.answer)
+
+
+def test_api_ai_prop_list(box_client: BoxClient, test_sample_file: File):
+    """Test AI location information of a Box file"""
+
+    assert test_sample_file.name == "Aliens - by James Cameron.pdf"
+
+    ai_response: AiResponseFull = get_ai_prop_list(box_client, test_sample_file)
+
+    assert ai_response.answer is not None
+    # print(ai_response.answer)
