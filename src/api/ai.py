@@ -59,3 +59,19 @@ def get_ai_prop_list(client: BoxClient, box_file: File) -> AiResponseFull:
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
+
+
+def get_ai_director_recommendations(
+    client: BoxClient, box_file: File
+) -> AiResponseFull:
+    """
+    Get AI director recommendations of a Box file.
+    """
+    mode = CreateAiAskMode.SINGLE_ITEM_QA
+    prompt = (
+        "read this movie script and provide  me a list of your recommended directors "
+        "with one sentence description for each director "
+        "do not suggest the original movie director if the movie has been already produced"
+    )
+    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+    return client.ai.create_ai_ask(mode, prompt, [item])
