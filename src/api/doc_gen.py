@@ -5,10 +5,26 @@ from enum import Enum
 
 from box_sdk_gen import BoxClient, File
 
-from . import get_ai_character_list, get_ai_plot_summary, get_ai_script_data
+from . import (
+    get_ai_character_list,
+    get_ai_location_information,
+    get_ai_plot_summary,
+    get_ai_script_data,
+)
 
 
 @dataclass
+class Location:
+    name: str = ""
+    description: str = ""
+
+    def to_dict(self):
+        return self.__dict__.copy()
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
+
+
 @dataclass
 class Character:
     name: str = ""
@@ -30,6 +46,7 @@ class MergeData:
     date_written: str = ""
     summary: str = ""
     character_list: list[Character] = None
+    locations: list[Location] = None
 
     def to_dict(self):
         return self.__dict__.copy()
@@ -89,9 +106,27 @@ def get_doc_gen_character_list(
     script_character_list.answer = script_character_list.answer.replace("```", "")
     # Eliminate the word json form from answer
     script_character_list.answer = script_character_list.answer.replace("json", "")
+    json_answer = json.loads(script_character_list.answer)
+    merge_data.character_list = json_answer.get("characters")
 
-    xxx = json.loads(script_character_list.answer)
+    return merge_data
 
-    merge_data.character_list = xxx.get("characters")
+
+def get_doc_gen_locations(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
+    """Get the merge data for a file."""
+
+    # Get character list
+    script_locations = get_ai_location_information(box_client, file)
+
+    # Eliminate double spacing in answer
+    script_locations.answer = " ".join(script_locations.answer.split())
+    # Eliminate ``` from answer
+    script_locations.answer = script_locations.answer.replace("```", "")
+    # Eliminate the word json form from answer
+    script_locations.answer = script_locations.answer.replace("json", "")
+    json_answer = json.loads(script_locations.answer)
+    merge_data.locations = json_answer.get("locations")
 
     return merge_data

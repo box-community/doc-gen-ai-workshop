@@ -43,7 +43,8 @@ def get_ai_location_information(client: BoxClient, box_file: File) -> AiResponse
     prompt = (
         "read this movie script and give me a list of locations "
         "with one sentence description for each location "
-        "do not suggest the original movie locations if the movie has been already produced"
+        "do not suggest the original movie locations if the movie has been already produced. "
+        "compose this locations list in a json format "
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
