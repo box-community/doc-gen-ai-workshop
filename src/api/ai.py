@@ -28,7 +28,8 @@ def get_ai_character_list(client: BoxClient, box_file: File) -> AiResponseFull:
         "(without the original actor name, just the character name) "
         "with one sentence description "
         "and suggest 5 actors for each character "
-        "do not suggest the original movie actors if the movie has been already produced"
+        "do not suggest the original movie actors if the movie has been already produced. "
+        "compose this characters list in a json format "
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
@@ -116,9 +117,10 @@ def get_ai_script_data(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     prompt = (
         "retrieve the following data from the movie script: "
-        "1. Author "
-        "2. Genre "
-        "3. Date written "
+        "Title, "
+        "Author, "
+        "Genre, "
+        "Date written"
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_extract(prompt, [item])
