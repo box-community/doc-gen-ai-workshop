@@ -108,8 +108,9 @@ def get_ai_screen_writer(client: BoxClient, box_file: File) -> AiResponseFull:
         "include other scrips the screen writer has written "
         "and a summary of accomplishments. "
         "If the screen writer does have movies being produced, "
-        "include a bullet list summary of grossed revenue for each movie on a separate paragraph. "
-        "On another paragraph, include a bullet list of the companies the screen writer has worked with. "
+        "Include a separate bullet list summary of grossed revenue for each movie. "
+        "Include a separate bullet list of the companies the screen writer has worked with. "
+        "compose this information in a json format "
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])

@@ -12,8 +12,36 @@ from . import (
     get_ai_plot_summary,
     get_ai_producer_recommendations,
     get_ai_prop_list,
+    get_ai_screen_writer,
     get_ai_script_data,
 )
+
+
+@dataclass
+class Movie:
+    title: str = ""
+    gross_revenue: str = ""
+
+    def to_dict(self):
+        return self.__dict__.copy()
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
+
+
+@dataclass
+class Writer:
+    name: str = ""
+    accomplishments: list[str] = None
+    other_scripts: list[str] = None
+    produced_movies: list[Movie] = None
+    companies_worked_with: list[str] = None
+
+    def to_dict(self):
+        return self.__dict__.copy()
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
 
 
 @dataclass
@@ -89,6 +117,7 @@ class MergeData:
     props: list[Prop] = None
     directors: list[Director] = None
     producers: list[Producer] = None
+    screen_writer: Writer = None
 
     def to_dict(self):
         return self.__dict__.copy()
@@ -230,5 +259,42 @@ def get_doc_gen_producers(
     script_producers.answer = script_producers.answer.replace("json", "")
     json_answer = json.loads(script_producers.answer)
     merge_data.producers = json_answer
+
+    return merge_data
+
+
+def get_doc_gen_writer(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
+    """Get the merge data for a file."""
+
+    # Get character list
+    script_producers = get_ai_screen_writer(box_client, file)
+
+    # Eliminate double spacing in answer
+    script_producers.answer = " ".join(script_producers.answer.split())
+    # Eliminate ``` from answer
+    script_producers.answer = script_producers.answer.replace("```", "")
+    # Eliminate the word json form from answer
+    script_producers.answer = script_producers.answer.replace("json", "")
+    json_answer = json.loads(script_producers.answer)
+    merge_data.screen_writer = json_answer.get("screen_writer")
+
+    return merge_data
+
+
+def get_doc_gen_script_data_full(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
+    """Get the merge data for a file."""
+
+    merge_data = get_doc_gen_script_data(box_client, file, merge_data)
+    merge_data = get_doc_gen_script_summary(box_client, file, merge_data)
+    merge_data = get_doc_gen_character_list(box_client, file, merge_data)
+    merge_data = get_doc_gen_locations(box_client, file, merge_data)
+    merge_data = get_doc_gen_props(box_client, file, merge_data)
+    merge_data = get_doc_gen_directors(box_client, file, merge_data)
+    merge_data = get_doc_gen_producers(box_client, file, merge_data)
+    merge_data = get_doc_gen_writer(box_client, file, merge_data)
 
     return merge_data

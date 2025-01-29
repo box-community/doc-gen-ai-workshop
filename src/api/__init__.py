@@ -16,7 +16,9 @@ from .doc_gen import (
     get_doc_gen_producers,
     get_doc_gen_props,
     get_doc_gen_script_data,
+    get_doc_gen_script_data_full,
     get_doc_gen_script_summary,
+    get_doc_gen_writer,
 )
 from .file_folder import create_folder, upload_file
 
@@ -39,4 +41,6 @@ __all__ = [
     "get_doc_gen_props",
     "get_doc_gen_directors",
     "get_doc_gen_producers",
+    "get_doc_gen_writer",
+    "get_doc_gen_script_data_full",
 ]
