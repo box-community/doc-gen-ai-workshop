@@ -4,11 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
-    "box-sdk-gen>=1.10.0",
-    "python-dotenv>=1.0.1",
-    "tqdm>=4.67.1",
-]
+dependencies = ["box-sdk-gen>=1.10.0", "python-dotenv>=1.0.1", "tqdm>=4.67.1"]
 
 [dependency-groups]
 dev = ["pytest>=8.3.4", "ruff>=0.9.3"]
