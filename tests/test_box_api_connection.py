@@ -32,4 +32,48 @@ def test_box_app_config_client():
 
 def test_box_app_config_write_env_file():
     """Should write the .env file with the configurations from the AppConfig object"""
-    assert False
+    ap = AppConfig()
+
+    assert ap.workshop_parent_folder_id == os.getenv(
+        "BOX_WORKSHOP_PARENT_FOLDER_ID", ""
+    )
+    assert ap.workshop_folder_id == os.getenv("BOX_WORKSHOP_FOLDER_ID", "")
+    assert ap.scripts_folder_id == os.getenv("BOX_SCRIPTS_FOLDER_ID", "")
+    assert ap.templates_folder_id == os.getenv("BOX_TEMPLATES_FOLDER_ID", "")
+
+    assert ap.conf.client_id == os.getenv("BOX_CLIENT_ID")
+    assert ap.conf.client_secret == os.getenv("BOX_CLIENT_SECRET")
+    assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
+    assert ap.conf.user_id == os.getenv("BOX_USER_ID")
+
+    ap.set_workshop_folder_ids("1", "2", "3")
+    ap.write_env_file()
+    ap.reload_dotenv()
+
+    assert ap.workshop_parent_folder_id == os.getenv(
+        "BOX_WORKSHOP_PARENT_FOLDER_ID", ""
+    )
+    assert ap.workshop_folder_id == "1"
+    assert ap.scripts_folder_id == "2"
+    assert ap.templates_folder_id == "3"
+
+    assert ap.conf.client_id == os.getenv("BOX_CLIENT_ID")
+    assert ap.conf.client_secret == os.getenv("BOX_CLIENT_SECRET")
+    assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
+    assert ap.conf.user_id == os.getenv("BOX_USER_ID")
+
+    ap.set_workshop_folder_ids("", "", "")
+    ap.write_env_file()
+    ap.reload_dotenv()
+
+    assert ap.workshop_parent_folder_id == os.getenv(
+        "BOX_WORKSHOP_PARENT_FOLDER_ID", ""
+    )
+    assert ap.workshop_folder_id == ""
+    assert ap.scripts_folder_id == ""
+    assert ap.templates_folder_id == ""
+
+    assert ap.conf.client_id == os.getenv("BOX_CLIENT_ID")
+    assert ap.conf.client_secret == os.getenv("BOX_CLIENT_SECRET")
+    assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
+    assert ap.conf.user_id == os.getenv("BOX_USER_ID")

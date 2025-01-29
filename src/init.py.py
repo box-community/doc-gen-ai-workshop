@@ -27,16 +27,15 @@ def main():
     print(f"Created folder: {template_folder.name}")
 
     # update .env file with the new folder ids
-    with open(".env", "a") as f:
-        f.write(f"BOX_WORKSHOP_FOLDER_ID={base_folder.id}\n")
-        f.write(f"BOX_SCRIPTS_FOLDER_ID={scripts_folder.id}\n")
-        f.write(f"BOX_TEMPLATES_FOLDER_ID={template_folder.id}\n")
+    ap.set_workshop_folder_ids(base_folder.id, scripts_folder.id, template_folder.id)
+    ap.write_env_file()
+    ap.reload_dotenv()
 
     # upload scripts folder to box
     local_files = [
         "sample_files/scripts/" + f for f in os.listdir("sample_files/scripts")
     ]
-    for local_file in tqdm(local_files, desc="Uploading files"):
+    for local_file in tqdm(local_files, desc="Uploading scripts"):
         box_file = upload_file(client, local_file, scripts_folder)
         # print(f"Uploaded file: {box_file.name}")
 
@@ -44,7 +43,7 @@ def main():
     local_files = [
         "sample_files/template/" + f for f in os.listdir("sample_files/template")
     ]
-    for local_file in tqdm(local_files, desc="Uploading files"):
+    for local_file in tqdm(local_files, desc="Uploading template"):
         box_file = upload_file(
             client, local_file, template_folder, ignore_if_exists=False
         )
