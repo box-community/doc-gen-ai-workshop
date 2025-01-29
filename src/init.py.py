@@ -1,8 +1,9 @@
-from client import AppConfig
-from api import upload_file, create_folder
-from tqdm import tqdm
 import os
-from box_sdk_gen import CreateFolderParent
+
+from tqdm import tqdm
+
+from api import create_folder, upload_file
+from client import AppConfig
 
 
 def main():

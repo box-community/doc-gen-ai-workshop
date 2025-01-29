@@ -1,7 +1,5 @@
-from box_sdk_gen import BoxClient, UploadFileAttributes, CreateFolderParent
-
+from src.api import create_folder, upload_file
 from src.client import AppConfig
-from src.api import upload_file, create_folder
 
 
 def test_api_file_folder_create_folder(app_config: AppConfig):

@@ -1,11 +1,12 @@
+import os
+
 from box_sdk_gen import (
-    BoxClient,
     BoxCCGAuth,
+    BoxClient,
     CCGConfig,
     FileWithInMemoryCacheTokenStorage,
 )
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 

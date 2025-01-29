@@ -1,6 +1,8 @@
-from src.client import AppConfig
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+
+from src.client import AppConfig
 
 load_dotenv()
 

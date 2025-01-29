@@ -1,15 +1,16 @@
+import os
+
 from box_sdk_gen import (
     BoxAPIError,
     BoxClient,
+    CreateFolderParent,
     File,
     Folder,
-    UploadUrl,
+    PreflightFileUploadCheckParent,
     UploadFileAttributes,
     UploadFileAttributesParentField,
-    PreflightFileUploadCheckParent,
-    CreateFolderParent,
+    UploadUrl,
 )
-import os
 
 
 def create_folder(
