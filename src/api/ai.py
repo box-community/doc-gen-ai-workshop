@@ -91,7 +91,8 @@ def get_ai_producer_recommendations(
     prompt = (
         "read this movie script and provide  me a list of your recommended producers "
         "with one sentence description for each producer "
-        "do not suggest the original movie producer if the movie has been already produced"
+        "do not suggest the original movie producer if the movie has been already produced. "
+        "compose this producers list in a json format "
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])

@@ -13,6 +13,7 @@ from .doc_gen import (
     get_doc_gen_character_list,
     get_doc_gen_directors,
     get_doc_gen_locations,
+    get_doc_gen_producers,
     get_doc_gen_props,
     get_doc_gen_script_data,
     get_doc_gen_script_summary,
@@ -36,4 +37,6 @@ __all__ = [
     "get_doc_gen_character_list",
     "get_doc_gen_locations",
     "get_doc_gen_props",
+    "get_doc_gen_directors",
+    "get_doc_gen_producers",
 ]

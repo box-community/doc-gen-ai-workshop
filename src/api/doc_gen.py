@@ -10,9 +10,22 @@ from . import (
     get_ai_director_recommendations,
     get_ai_location_information,
     get_ai_plot_summary,
+    get_ai_producer_recommendations,
     get_ai_prop_list,
     get_ai_script_data,
 )
+
+
+@dataclass
+class Producer:
+    name: str = ""
+    description: str = ""
+
+    def to_dict(self):
+        return self.__dict__.copy()
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
 
 
 @dataclass
@@ -75,6 +88,7 @@ class MergeData:
     locations: list[Location] = None
     props: list[Prop] = None
     directors: list[Director] = None
+    producers: list[Producer] = None
 
     def to_dict(self):
         return self.__dict__.copy()
@@ -196,5 +210,25 @@ def get_doc_gen_directors(
     script_directors.answer = script_directors.answer.replace("json", "")
     json_answer = json.loads(script_directors.answer)
     merge_data.directors = json_answer
+
+    return merge_data
+
+
+def get_doc_gen_producers(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
+    """Get the merge data for a file."""
+
+    # Get character list
+    script_producers = get_ai_producer_recommendations(box_client, file)
+
+    # Eliminate double spacing in answer
+    script_producers.answer = " ".join(script_producers.answer.split())
+    # Eliminate ``` from answer
+    script_producers.answer = script_producers.answer.replace("```", "")
+    # Eliminate the word json form from answer
+    script_producers.answer = script_producers.answer.replace("json", "")
+    json_answer = json.loads(script_producers.answer)
+    merge_data.producers = json_answer
 
     return merge_data
