@@ -11,7 +11,9 @@ from .ai import (
 from .doc_gen import (
     MergeData,
     get_doc_gen_character_list,
+    get_doc_gen_directors,
     get_doc_gen_locations,
+    get_doc_gen_props,
     get_doc_gen_script_data,
     get_doc_gen_script_summary,
 )
@@ -33,4 +35,5 @@ __all__ = [
     "get_doc_gen_script_summary",
     "get_doc_gen_character_list",
     "get_doc_gen_locations",
+    "get_doc_gen_props",
 ]

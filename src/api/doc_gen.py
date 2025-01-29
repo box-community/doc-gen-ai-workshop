@@ -7,10 +7,36 @@ from box_sdk_gen import BoxClient, File
 
 from . import (
     get_ai_character_list,
+    get_ai_director_recommendations,
     get_ai_location_information,
     get_ai_plot_summary,
+    get_ai_prop_list,
     get_ai_script_data,
 )
+
+
+@dataclass
+class Director:
+    name: str = ""
+    description: str = ""
+
+    def to_dict(self):
+        return self.__dict__.copy()
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
+
+
+@dataclass
+class Prop:
+    name: str = ""
+    description: str = ""
+
+    def to_dict(self):
+        return self.__dict__.copy()
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
 
 
 @dataclass
@@ -47,6 +73,8 @@ class MergeData:
     summary: str = ""
     character_list: list[Character] = None
     locations: list[Location] = None
+    props: list[Prop] = None
+    directors: list[Director] = None
 
     def to_dict(self):
         return self.__dict__.copy()
@@ -128,5 +156,45 @@ def get_doc_gen_locations(
     script_locations.answer = script_locations.answer.replace("json", "")
     json_answer = json.loads(script_locations.answer)
     merge_data.locations = json_answer.get("locations")
+
+    return merge_data
+
+
+def get_doc_gen_props(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
+    """Get the merge data for a file."""
+
+    # Get character list
+    script_props = get_ai_prop_list(box_client, file)
+
+    # Eliminate double spacing in answer
+    script_props.answer = " ".join(script_props.answer.split())
+    # Eliminate ``` from answer
+    script_props.answer = script_props.answer.replace("```", "")
+    # Eliminate the word json form from answer
+    script_props.answer = script_props.answer.replace("json", "")
+    json_answer = json.loads(script_props.answer)
+    merge_data.props = json_answer.get("props")
+
+    return merge_data
+
+
+def get_doc_gen_directors(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
+    """Get the merge data for a file."""
+
+    # Get character list
+    script_directors = get_ai_director_recommendations(box_client, file)
+
+    # Eliminate double spacing in answer
+    script_directors.answer = " ".join(script_directors.answer.split())
+    # Eliminate ``` from answer
+    script_directors.answer = script_directors.answer.replace("```", "")
+    # Eliminate the word json form from answer
+    script_directors.answer = script_directors.answer.replace("json", "")
+    json_answer = json.loads(script_directors.answer)
+    merge_data.directors = json_answer
 
     return merge_data
