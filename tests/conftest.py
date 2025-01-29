@@ -1,5 +1,5 @@
 import pytest
-from box_sdk_gen import BoxClient, File
+from box_sdk_gen import BoxClient
 
 from src.api import create_folder, upload_file
 from src.client import AppConfig

@@ -1,6 +1,5 @@
 import logging
 
-import pytest
 from box_sdk_gen import AiResponseFull, BoxClient, File
 
 from src.api import get_ai_character_list, get_ai_plot_summary
