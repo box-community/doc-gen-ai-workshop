@@ -95,4 +95,4 @@ def test_api_ai_screen_writer(box_client: BoxClient, test_sample_file: File):
     ai_response: AiResponseFull = get_ai_screen_writer(box_client, test_sample_file)
 
     assert ai_response.answer is not None
-    print(ai_response.answer)
+    # print(ai_response.answer)
