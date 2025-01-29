@@ -108,3 +108,17 @@ def get_ai_screen_writer(client: BoxClient, box_file: File) -> AiResponseFull:
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
+
+
+def get_ai_script_data(client: BoxClient, box_file: File) -> AiResponseFull:
+    """
+    Get AI script data of a Box file.
+    """
+    prompt = (
+        "retrieve the following data from the movie script: "
+        "1. Author "
+        "2. Genre "
+        "3. Date written "
+    )
+    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+    return client.ai.create_ai_extract(prompt, [item])
