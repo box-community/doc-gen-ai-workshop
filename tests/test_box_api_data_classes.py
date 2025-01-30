@@ -1,12 +1,6 @@
 from src.api import (
-    Character,
-    Director,
     GenericNameDescription,
-    Location,
-    MergeData,
     Movie,
-    Prop,
-    Writer,
 )
 
 

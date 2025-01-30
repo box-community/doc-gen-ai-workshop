@@ -13,7 +13,6 @@ from .doc_gen_data_classes import (
     Character,
     Director,
     MergeData,
-    Movie,
     Producer,
     Script,
     Writer,

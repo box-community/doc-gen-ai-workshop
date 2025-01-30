@@ -53,7 +53,7 @@ def upload_file(
 
     # preflight check
     try:
-        upload_url: UploadUrl = client.uploads.preflight_file_upload_check(
+        client.uploads.preflight_file_upload_check(
             name=file_name,
             size=file_size,
             parent=PreflightFileUploadCheckParent(id=box_parent_folder.id),
