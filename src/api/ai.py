@@ -1,3 +1,5 @@
+from typing import List
+
 from box_sdk_gen import (
     AiItemBase,
     AiItemBaseTypeField,
@@ -7,26 +9,30 @@ from box_sdk_gen import (
     File,
 )
 
-from .doc_gen_data_classes import Script
+from .doc_gen_data_classes import Character, CharacterList, Location, Script
 
-
-def get_ai_plot_summary(client: BoxClient, box_file: File) -> AiResponseFull:
-    """
-    Get AI plot summary of a Box file.
-    """
-    mode = CreateAiAskMode.SINGLE_ITEM_QA
-    prompt = "read this movie script and summarize the plot, ignoring if the movie has been already produced"
-    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
-    return client.ai.create_ai_ask(mode, prompt, [item])
+# TODO: Dead code to remove
+# def get_ai_plot_summary(client: BoxClient, box_file: File) -> AiResponseFull:
+#     """
+#     Get AI plot summary of a Box file.
+#     """
+#     mode = CreateAiAskMode.SINGLE_ITEM_QA
+#     prompt = "read this movie script and summarize the plot, ignoring if the movie has been already produced"
+#     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+#     return client.ai.create_ai_ask(mode, prompt, [item])
 
 
 def get_ai_character_list(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI character list of a Box file.
     """
+    # TODO: Flaky schemas
+    # characters = CharacterList()
+    # schema = characters.json_schema()
     mode = CreateAiAskMode.SINGLE_ITEM_QA
     prompt = (
         "read this movie script and give me a character list, "
+        # f"compose this characters list in a json format using this json schema: {schema}"
         "(without the original actor name, just the character name) "
         "with one sentence description "
         "and suggest 5 actors for each character "
@@ -123,10 +129,10 @@ def get_ai_script_data(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI script data of a Box file.
     """
-    schema = Script().json_schema()
+    script_schema = Script().json_schema()
 
     prompt = (
-        f"Retrieve the following data from the movie script: {schema}"
+        f"Retrieve the following data from the movie script: {script_schema}"
         # "Title, "
         # "Author, "
         # "Genre, "

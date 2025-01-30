@@ -6,7 +6,7 @@ from src.api import (
     get_ai_character_list,
     get_ai_director_recommendations,
     get_ai_location_information,
-    get_ai_plot_summary,
+    # get_ai_plot_summary,
     get_ai_producer_recommendations,
     get_ai_prop_list,
     get_ai_screen_writer,
@@ -15,16 +15,16 @@ from src.api import (
 
 logger = logging.getLogger(__name__)
 
+# TODO: Dead code to remove
+# def test_api_ai_plot_summary(box_client: BoxClient, test_sample_file: File):
+#     """Test AI plot summary of a Box file"""
 
-def test_api_ai_plot_summary(box_client: BoxClient, test_sample_file: File):
-    """Test AI plot summary of a Box file"""
+#     assert test_sample_file.name == "Aliens - by James Cameron.pdf"
 
-    assert test_sample_file.name == "Aliens - by James Cameron.pdf"
+#     ai_response: AiResponseFull = get_ai_plot_summary(box_client, test_sample_file)
 
-    ai_response: AiResponseFull = get_ai_plot_summary(box_client, test_sample_file)
-
-    assert ai_response.answer is not None
-    # print(ai_response.answer)
+#     assert ai_response.answer is not None
+#     # print(ai_response.answer)
 
 
 def test_api_ai_character_list(box_client: BoxClient, test_sample_file: File):

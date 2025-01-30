@@ -6,13 +6,13 @@ from .ai import (
     get_ai_character_list,
     get_ai_director_recommendations,
     get_ai_location_information,
-    get_ai_plot_summary,
+    # get_ai_plot_summary,
     get_ai_producer_recommendations,
     get_ai_prop_list,
     get_ai_screen_writer,
     get_ai_script_data,
 )
-from .doc_gen_data_classes import MergeData, Movie, Script, Writer
+from .doc_gen_data_classes import CharacterList, MergeData, Movie, Script, Writer
 
 
 def get_doc_gen_script_data(
@@ -25,10 +25,11 @@ def get_doc_gen_script_data(
 
     # Eliminate double spacing in answer
     script_data.answer = " ".join(script_data.answer.split())
+    # print(script_data.answer)
 
     # TODO: Overwrite merge data with script data
     # This initial query picks up the characters list, and the summary
-
+    script_data_dict = json.loads(script_data.answer)
     merge_data.script = Script.from_json(script_data.answer)
 
     return merge_data
@@ -65,8 +66,9 @@ def get_doc_gen_character_list(
     script_character_list.answer = script_character_list.answer.replace("```", "")
     # Eliminate the word json form from answer
     script_character_list.answer = script_character_list.answer.replace("json", "")
-    json_answer = json.loads(script_character_list.answer)
-    merge_data.character_list = json_answer.get("characters")
+
+    character_list = CharacterList.from_json(script_character_list.answer)
+    merge_data.character_list = character_list.characters
 
     return merge_data
 

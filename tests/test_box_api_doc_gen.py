@@ -11,7 +11,6 @@ from src.api import (
     get_doc_gen_props,
     get_doc_gen_script_data,
     get_doc_gen_script_data_full,
-    get_doc_gen_script_summary,
     get_doc_gen_writer,
 )
 
@@ -27,18 +26,11 @@ def test_api_doc_gen_load_merge_data(box_client: BoxClient, test_sample_file: Fi
     assert merge_data.script.author == "James Cameron"
     assert merge_data.script.genre == "Action Horror Sci-Fi Thriller"
     assert merge_data.script.date_written == "May 28, 1985"
+    # summary
     assert len(merge_data.script.plot_summary) > 0
-
-
-def test_api_doc_gen_load_script_summary(box_client: BoxClient, test_sample_file: File):
-    """Test the script summary API doc generation."""
-
-    assert test_sample_file.name == "Aliens - by James Cameron.pdf"
-
-    merge_data: MergeData = get_doc_gen_script_summary(box_client, test_sample_file)
-    # print(merge_data.to_json())
-    assert len(merge_data.summary) > 0
-    assert False
+    # locations
+    assert len(merge_data.script.locations) > 0
+    assert merge_data.script.locations[0].name != ""
 
 
 def test_api_doc_gen_load_character_list(box_client: BoxClient, test_sample_file: File):
@@ -47,9 +39,12 @@ def test_api_doc_gen_load_character_list(box_client: BoxClient, test_sample_file
     assert test_sample_file.name == "Aliens - by James Cameron.pdf"
 
     merge_data: MergeData = get_doc_gen_character_list(box_client, test_sample_file)
-    # print(merge_data.to_json())
+    print(merge_data.to_json())
     assert len(merge_data.character_list) > 0
-    assert False
+    assert merge_data.character_list[0].name is not None
+    assert merge_data.character_list[0].name != ""
+    assert len(merge_data.character_list[0].suggested_actors) > 0
+    assert merge_data.character_list[0].suggested_actors[0] != ""
 
 
 def test_api_doc_gen_load_locations(box_client: BoxClient, test_sample_file: File):
@@ -58,9 +53,8 @@ def test_api_doc_gen_load_locations(box_client: BoxClient, test_sample_file: Fil
     assert test_sample_file.name == "Aliens - by James Cameron.pdf"
 
     merge_data: MergeData = get_doc_gen_locations(box_client, test_sample_file)
-    # print(merge_data.to_json())
+    print(merge_data.to_json())
     assert len(merge_data.locations) > 0
-    assert False
 
 
 def test_api_doc_gen_load_props(box_client: BoxClient, test_sample_file: File):

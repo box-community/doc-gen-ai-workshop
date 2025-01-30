@@ -99,10 +99,22 @@ class Prop:
 
 @dataclass_json
 @dataclass
-class Location:
+class Location(GenericNameDescription):
     pass
-    # name: str = ""
-    # description: str = ""
+
+
+@dataclass_json
+@dataclass
+class Character(MergeBase):
+    name: str = ""
+    description: str = ""
+    suggested_actors: list[str] = field(
+        default=None,
+        metadata={
+            "description": "suggest 5 actors this character "
+            "do not suggest the original movie actors if the movie has been already produced."
+        },
+    )
 
     # def to_dict(self):
     #     return self.__dict__.copy()
@@ -113,16 +125,8 @@ class Location:
 
 @dataclass_json
 @dataclass
-class Character(MergeBase):
-    name: str = ""
-    description: str = ""
-    suggested_actors: list[str] = None
-
-    # def to_dict(self):
-    #     return self.__dict__.copy()
-
-    # def to_json(self):
-    #     return json.dumps(self.to_dict(), indent=4)
+class CharacterList(MergeBase):
+    characters: list[Character] = None
 
 
 @dataclass_json
@@ -139,6 +143,15 @@ class Script(MergeBase):
         default="",
         metadata={
             "description": "A summary of the plot of the movies script.",
+        },
+    )
+    locations: list[Location] = field(
+        default=None,
+        metadata={
+            "description": "read this movie script and give me a list of locations "
+            "with one sentence description for each location "
+            "do not suggest the original movie locations if the movie has been already produced. "
+            "compose this locations list in a json format ",
         },
     )
 
