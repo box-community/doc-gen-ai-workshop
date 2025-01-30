@@ -1,12 +1,8 @@
 import json
-from dataclasses import dataclass
-from datetime import date, datetime
-from enum import Enum
 
 from box_sdk_gen import BoxClient, File
-from dataclasses_json import dataclass_json
 
-from . import (
+from .ai import (
     get_ai_character_list,
     get_ai_director_recommendations,
     get_ai_location_information,
@@ -16,142 +12,22 @@ from . import (
     get_ai_screen_writer,
     get_ai_script_data,
 )
+from .doc_gen_data_classes import MergeData, Movie, Writer
 
 
-@dataclass_json
-@dataclass
-class Movie:
-    title: str = ""
-    gross_revenue: str = ""
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class Writer:
-    name: str = ""
-    accomplishments: list[str] = None
-    other_scripts: list[str] = None
-    produced_movies: list[Movie] = None
-    companies_worked_with: list[str] = None
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class Producer:
-    name: str = ""
-    description: str = ""
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class Director:
-    name: str = ""
-    description: str = ""
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class Prop:
-    name: str = ""
-    description: str = ""
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class Location:
-    name: str = ""
-    description: str = ""
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class Character:
-    name: str = ""
-    description: str = ""
-    suggested_actors: list[str] = None
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class MergeData:
-    title: str = ""
-    author: str = ""
-    genre: str = ""
-    date_written: str = ""
-    summary: str = ""
-    character_list: list[Character] = None
-    locations: list[Location] = None
-    props: list[Prop] = None
-    directors: list[Director] = None
-    producers: list[Producer] = None
-    screen_writer: Writer = None
-
-    def to_dict(self):
-        return self.__dict__.copy()
-
-    def to_json(self):
-        return json.dumps(self.to_dict(), indent=4)
-
-
-def get_doc_gen_script_data(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
+def get_doc_gen_script_data(box_client: BoxClient, file: File) -> MergeData:
     """Get the merge data for a file."""
 
     # Get script data
-    # {"Author": "James Cameron", "Genre": "Action Horror Sci-Fi Thriller", "Date written": "May 28, 1985"}
     script_data = get_ai_script_data(box_client, file)
 
     # Eliminate double spacing in answer
     script_data.answer = " ".join(script_data.answer.split())
-    script_data_json = json.loads(script_data.answer)
 
-    merge_data.title = script_data_json["Title"]
-    merge_data.author = script_data_json["Author"]
-    merge_data.genre = script_data_json["Genre"]
-    merge_data.date_written = script_data_json["Date written"]
+    # TODO: Overwrite merge data with script data
+    # This initial query picks up the characters list, and the summary
+
+    merge_data = MergeData.from_json(script_data.answer)
 
     return merge_data
 

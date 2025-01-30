@@ -9,7 +9,6 @@ from .ai import (
     get_ai_script_data,
 )
 from .doc_gen import (
-    MergeData,
     get_doc_gen_character_list,
     get_doc_gen_directors,
     get_doc_gen_locations,
@@ -19,6 +18,17 @@ from .doc_gen import (
     get_doc_gen_script_data_full,
     get_doc_gen_script_summary,
     get_doc_gen_writer,
+)
+from .doc_gen_data_classes import (
+    Character,
+    Director,
+    GenericNameDescription,
+    Location,
+    MergeData,
+    Movie,
+    Producer,
+    Prop,
+    Writer,
 )
 from .file_folder import create_folder, upload_file
 
@@ -43,4 +53,12 @@ __all__ = [
     "get_doc_gen_producers",
     "get_doc_gen_writer",
     "get_doc_gen_script_data_full",
+    "Character",
+    "Location",
+    "Prop",
+    "Director",
+    "Producer",
+    "Writer",
+    "GenericNameDescription",
+    "Movie",
 ]
