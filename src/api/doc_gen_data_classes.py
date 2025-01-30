@@ -15,15 +15,6 @@ class MergeBase(JsonSchemaMixin):
     def to_json(self):
         return super().to_json()
 
-    # def from_dict(self):
-    #     return super().from_dict()
-
-    # def from_json(self):
-    #     return super().from_json()
-
-    # def schema(self):
-    #     return super().json_schema()
-
 
 @dataclass_json
 @dataclass
@@ -48,53 +39,23 @@ class Writer(MergeBase):
     produced_movies: list[Movie] = None
     companies_worked_with: list[str] = None
 
-    # def to_dict(self):
-    #     return self.__dict__.copy()
-
-    # def to_json(self):
-    #     return json.dumps(self.to_dict(), indent=4)
-
 
 @dataclass_json
 @dataclass
 class Producer(GenericNameDescription):
     pass
-    # name: str = ""
-    # description: str = ""
-
-    # def to_dict(self):
-    #     return self.__dict__.copy()
-
-    # def to_json(self):
-    #     return json.dumps(self.to_dict(), indent=4)
 
 
 @dataclass_json
 @dataclass
-class Director:
+class Director(GenericNameDescription):
     pass
-    # name: str = ""
-    # description: str = ""
-
-    # def to_dict(self):
-    #     return self.__dict__.copy()
-
-    # def to_json(self):
-    #     return json.dumps(self.to_dict(), indent=4)
 
 
 @dataclass_json
 @dataclass
-class Prop:
+class Prop(GenericNameDescription):
     pass
-    # name: str = ""
-    # description: str = ""
-
-    # def to_dict(self):
-    #     return self.__dict__.copy()
-
-    # def to_json(self):
-    #     return json.dumps(self.to_dict(), indent=4)
 
 
 @dataclass_json
@@ -116,18 +77,6 @@ class Character(MergeBase):
         },
     )
 
-    # def to_dict(self):
-    #     return self.__dict__.copy()
-
-    # def to_json(self):
-    #     return json.dumps(self.to_dict(), indent=4)
-
-
-@dataclass_json
-@dataclass
-class CharacterList(MergeBase):
-    characters: list[Character] = None
-
 
 @dataclass_json
 @dataclass
@@ -145,13 +94,29 @@ class Script(MergeBase):
             "description": "A summary of the plot of the movies script.",
         },
     )
+    # TODO: Does not suggest the actors (extract only)
+    # character_list: list[Character] = field(
+    #     default=None,
+    #     metadata={
+    #         "description": "read this movie script and give me a character list, "
+    #         "(without the original actor name, just the character name) "
+    #         "with one sentence description ",
+    #     },
+    # )
+
     locations: list[Location] = field(
         default=None,
         metadata={
-            "description": "read this movie script and give me a list of locations "
+            "description": "read this movie script and give me a list of up to 10 locations "
             "with one sentence description for each location "
             "do not suggest the original movie locations if the movie has been already produced. "
-            "compose this locations list in a json format ",
+        },
+    )
+    props: Optional[list[Prop]] = field(
+        default=None,
+        metadata={
+            "description": "read this movie script and give me a list of up to 10 props "
+            "with one sentence description for each prop. "
         },
     )
 
@@ -160,15 +125,24 @@ class Script(MergeBase):
 @dataclass
 class MergeData(MergeBase):
     script: Optional[Script] = None
-    character_list: Optional[list[Character]] = None
-    locations: Optional[list[Location]] = None
-    props: Optional[list[Prop]] = None
+    character_list: Optional[list[Character]] = field(
+        default=None,
+        metadata={
+            "description": "read this movie script and give me a character list, "
+            "(without the original actor name, just the character name) "
+            "with one sentence description ",
+        },
+    )
+    # locations: Optional[list[Location]] = field(
+    #     default=None,
+    #     metadata={
+    #         "description": "read this movie script and give me a list of locations "
+    #         "with one sentence description for each location "
+    #         "do not suggest the original movie locations if the movie has been already produced. "
+    #         "compose this locations list in a json format ",
+    #     },
+    # )
+    # props: Optional[list[Prop]] = None
     directors: Optional[list[Director]] = None
     producers: Optional[list[Producer]] = None
     screen_writer: Optional[Writer] = None
-
-    # def to_dict(self):
-    #     return self.__dict__.copy()
-
-    # def to_json(self):
-    #     return json.dumps(self.to_dict(), indent=4)
