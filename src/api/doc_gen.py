@@ -39,23 +39,6 @@ def get_doc_gen_script_data(
     return merge_data
 
 
-# TODO: Dead code to remove
-# def get_doc_gen_script_summary(
-#     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-# ) -> MergeData:
-#     """Get the merge data for a file."""
-
-#     # Get script summary
-#     script_summary = get_ai_plot_summary(box_client, file)
-
-#     # Eliminate double spacing in answer
-#     script_summary.answer = " ".join(script_summary.answer.split())
-
-#     merge_data.summary = script_summary.answer
-
-#     return merge_data
-
-
 def get_doc_gen_character_list(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
@@ -75,47 +58,6 @@ def get_doc_gen_character_list(
     merge_data.character_list = character_list
 
     return merge_data
-
-
-# TODO: Dead code to remove
-# def get_doc_gen_locations(
-#     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-# ) -> MergeData:
-#     """Get the merge data for a file."""
-
-#     # Get character list
-#     script_locations = get_ai_location_information(box_client, file)
-
-#     # Eliminate double spacing in answer
-#     script_locations.answer = " ".join(script_locations.answer.split())
-#     # Eliminate ``` from answer
-#     script_locations.answer = script_locations.answer.replace("```", "")
-#     # Eliminate the word json form from answer
-#     script_locations.answer = script_locations.answer.replace("json", "")
-#     json_answer = json.loads(script_locations.answer)
-#     merge_data.locations = json_answer.get("locations")
-
-#     return merge_data
-
-# TODO: Dead code to remove
-# def get_doc_gen_props(
-#     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-# ) -> MergeData:
-#     """Get the merge data for a file."""
-
-#     # Get character list
-#     script_props = get_ai_prop_list(box_client, file)
-
-#     # Eliminate double spacing in answer
-#     script_props.answer = " ".join(script_props.answer.split())
-#     # Eliminate ``` from answer
-#     script_props.answer = script_props.answer.replace("```", "")
-#     # Eliminate the word json form from answer
-#     script_props.answer = script_props.answer.replace("json", "")
-#     json_answer = json.loads(script_props.answer)
-#     merge_data.props = json_answer.get("props")
-
-#     return merge_data
 
 
 def get_doc_gen_directors(

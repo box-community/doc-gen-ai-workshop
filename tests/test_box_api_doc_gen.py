@@ -46,7 +46,7 @@ def test_api_doc_gen_load_character_list(box_client: BoxClient, test_sample_file
     assert merge_data.character_list[0].suggested_actors[0] != ""
 
 
-# TODO: Load Producers and Directors in the same request
+# TODO: Load Producers and Directors and Writers in the same request
 def test_api_doc_gen_load_directors(box_client: BoxClient, test_sample_file: File):
     """Test the director list API doc generation."""
 

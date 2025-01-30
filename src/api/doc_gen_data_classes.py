@@ -94,15 +94,6 @@ class Script(MergeBase):
             "description": "A summary of the plot of the movies script.",
         },
     )
-    # TODO: Does not suggest the actors (extract only)
-    # character_list: list[Character] = field(
-    #     default=None,
-    #     metadata={
-    #         "description": "read this movie script and give me a character list, "
-    #         "(without the original actor name, just the character name) "
-    #         "with one sentence description ",
-    #     },
-    # )
 
     locations: list[Location] = field(
         default=None,

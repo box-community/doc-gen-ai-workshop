@@ -48,7 +48,7 @@ def test_box_app_config_write_env_file():
     assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
     assert ap.conf.user_id == os.getenv("BOX_USER_ID")
 
-    ap.set_workshop_folder_ids("1", "2", "3")
+    ap.set_workshop_folder_ids("1", "2", "3", "4")
     ap.write_env_file()
     ap.reload_dotenv()
 
@@ -64,7 +64,7 @@ def test_box_app_config_write_env_file():
     assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
     assert ap.conf.user_id == os.getenv("BOX_USER_ID")
 
-    ap.set_workshop_folder_ids("", "", "")
+    ap.set_workshop_folder_ids("", "", "", "")
     ap.write_env_file()
     ap.reload_dotenv()
 
