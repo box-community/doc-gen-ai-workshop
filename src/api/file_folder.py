@@ -9,7 +9,6 @@ from box_sdk_gen import (
     PreflightFileUploadCheckParent,
     UploadFileAttributes,
     UploadFileAttributesParentField,
-    UploadUrl,
 )
 
 

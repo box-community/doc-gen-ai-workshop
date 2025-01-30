@@ -8,6 +8,7 @@ from .ai import (
     get_ai_producer_recommendations,
     get_ai_screen_writer,
     get_ai_script_data,
+    get_ai_smart_load,
 )
 from .doc_gen_data_classes import (
     Character,
@@ -122,6 +123,34 @@ def get_doc_gen_writer(
     return merge_data
 
 
+def get_doc_gen_smart_load(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
+    ai_answer = get_ai_smart_load(box_client, file)
+
+    # Eliminate double spacing in answer
+    ai_answer.answer = " ".join(ai_answer.answer.split())
+    # Eliminate ``` from answer
+    ai_answer.answer = ai_answer.answer.replace("```", "")
+    # Eliminate the word json form from answer
+    ai_answer.answer = ai_answer.answer.replace("json", "")
+
+    answer_dict = json.loads(ai_answer.answer)
+    # print(answer_dict)
+
+    director_list = json.dumps(answer_dict.get("directors"))
+    producer_list = json.dumps(answer_dict.get("producers"))
+    directors = Director.schema().loads(director_list, many=True)
+    producers = Producer.schema().loads(producer_list, many=True)
+    writer = Writer.from_dict(answer_dict.get("writer"))
+
+    merge_data.directors = directors
+    merge_data.producers = producers
+    merge_data.screen_writer = writer
+
+    return merge_data
+
+
 def get_doc_gen_script_data_full(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
@@ -129,8 +158,9 @@ def get_doc_gen_script_data_full(
 
     merge_data = get_doc_gen_script_data(box_client, file, merge_data)
     merge_data = get_doc_gen_character_list(box_client, file, merge_data)
-    merge_data = get_doc_gen_directors(box_client, file, merge_data)
-    merge_data = get_doc_gen_producers(box_client, file, merge_data)
-    merge_data = get_doc_gen_writer(box_client, file, merge_data)
+    merge_data = get_doc_gen_smart_load(box_client, file, merge_data)
+    # merge_data = get_doc_gen_directors(box_client, file, merge_data)
+    # merge_data = get_doc_gen_producers(box_client, file, merge_data)
+    # merge_data = get_doc_gen_writer(box_client, file, merge_data)
 
     return merge_data

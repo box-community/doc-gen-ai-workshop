@@ -7,6 +7,7 @@ from src.api import (
     get_doc_gen_producers,
     get_doc_gen_script_data,
     get_doc_gen_script_data_full,
+    get_doc_gen_smart_load,
     get_doc_gen_writer,
 )
 
@@ -46,6 +47,21 @@ def test_api_doc_gen_load_character_list(box_client: BoxClient, test_sample_file
     assert merge_data.character_list[0].suggested_actors[0] != ""
 
 
+def test_api_doc_gen_smart_load(box_client: BoxClient, test_sample_file: File):
+    assert test_sample_file.name == "Aliens - by James Cameron.pdf"
+
+    merge_data: MergeData = get_doc_gen_smart_load(box_client, test_sample_file)
+    # print(merge_data.to_json())
+
+    assert len(merge_data.directors) > 0
+    assert len(merge_data.producers) > 0
+    assert merge_data.screen_writer.name == "James Cameron"
+    assert len(merge_data.screen_writer.other_scripts) > 0
+    assert len(merge_data.screen_writer.accomplishments) > 0
+    assert len(merge_data.screen_writer.produced_movies) > 0
+    assert len(merge_data.screen_writer.companies_worked_with) > 0
+
+
 # TODO: Load Producers and Directors and Writers in the same request
 def test_api_doc_gen_load_directors(box_client: BoxClient, test_sample_file: File):
     """Test the director list API doc generation."""
@@ -64,7 +80,7 @@ def test_api_doc_gen_load_producers(box_client: BoxClient, test_sample_file: Fil
     assert test_sample_file.name == "Aliens - by James Cameron.pdf"
 
     merge_data: MergeData = get_doc_gen_producers(box_client, test_sample_file)
-    print(merge_data.to_json())
+    # print(merge_data.to_json())
 
     assert len(merge_data.producers) > 0
     assert merge_data.producers[0].name != ""
@@ -76,7 +92,7 @@ def test_api_doc_gen_load_writer(box_client: BoxClient, test_sample_file: File):
     assert test_sample_file.name == "Aliens - by James Cameron.pdf"
 
     merge_data: MergeData = get_doc_gen_writer(box_client, test_sample_file)
-    print(merge_data.to_json())
+    # print(merge_data.to_json())
 
     assert merge_data.screen_writer.name == "James Cameron"
     assert merge_data.screen_writer.other_scripts is not None

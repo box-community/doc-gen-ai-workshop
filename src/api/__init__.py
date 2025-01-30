@@ -4,6 +4,7 @@ from .ai import (
     get_ai_producer_recommendations,
     get_ai_screen_writer,
     get_ai_script_data,
+    get_ai_smart_load,
 )
 from .doc_gen import (
     get_doc_gen_character_list,
@@ -11,6 +12,7 @@ from .doc_gen import (
     get_doc_gen_producers,
     get_doc_gen_script_data,
     get_doc_gen_script_data_full,
+    get_doc_gen_smart_load,
     get_doc_gen_writer,
 )
 from .doc_gen_data_classes import (
@@ -52,4 +54,6 @@ __all__ = [
     "GenericNameDescription",
     "Movie",
     "Script",
+    "get_doc_gen_smart_load",
+    "get_ai_smart_load",
 ]

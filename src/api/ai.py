@@ -92,13 +92,61 @@ def get_ai_screen_writer(client: BoxClient, box_file: File) -> AiResponseFull:
 
     mode = CreateAiAskMode.SINGLE_ITEM_QA
     prompt = (
-        "read this movie script and provide me information on the screen writer "
+        "read this movie script and provide me information on the script writer "
         "include other scrips the screen writer has written "
         "and a summary of accomplishments. "
         "If the screen writer does have movies that were produced, "
         "Include a separate bullet list summary of grossed revenue for each past movie. "
         "Include a separate bullet list of the companies the screen writer has worked with. "
         f"format the output this directors list in a json format using this example: {sample_json_object}"
+    )
+    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+    return client.ai.create_ai_ask(mode, prompt, [item])
+
+
+def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
+    """
+    Get AI smart load of a Box file.
+    """
+    directors = [Director(name="Director name", description="Director description")]
+
+    producers = [Producer(name="Director name", description="Director description")]
+
+    writer = Writer(name="Writer Name")
+    writer.accomplishments = ["Accomplishment 1", "Accomplishment 2"]
+    writer.other_scripts = ["Script 1", "Script 2"]
+    writer.produced_movies = [
+        {"title": "Movie 1", "gross_revenue": "1000000"},
+        {"title": "Movie 2", "gross_revenue": "2000000"},
+    ]
+    writer.companies_worked_with = ["Company 1", "Company 2"]
+
+    sample_dict = {}
+    sample_dict["directors"] = directors
+    sample_dict["producers"] = producers
+    sample_dict["writer"] = writer
+
+    mode = CreateAiAskMode.SINGLE_ITEM_QA
+
+    prompt = (
+        "read this movie script and provide  me with the following:"
+        # Directors
+        "Recommended Directors: Suggest a list of 5 of your recommended directors "
+        "with one sentence description for each director "
+        "do not suggest the original movie director if the movie has been already produced. "
+        # Producers
+        "Recommended Producers: Suggest a list of 5 of your recommended producers "
+        "with one sentence description for each producer "
+        "do not suggest the original movie producer if the movie has been already produced. "
+        # Screen Writer
+        "Script Writer: information on the script writer "
+        "include other scrips the screen writer has written "
+        "and a summary of accomplishments. "
+        "If the screen writer does have movies that were produced, "
+        "Include a separate bullet list summary of grossed revenue for each past movie. "
+        "Include a separate bullet list of the companies the screen writer has worked with. "
+        # Format
+        f"format the output this directors list in a json format using this example: {sample_dict}"
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
