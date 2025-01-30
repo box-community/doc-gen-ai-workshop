@@ -4,6 +4,7 @@ from datetime import date, datetime
 from enum import Enum
 
 from box_sdk_gen import BoxClient, File
+from dataclasses_json import dataclass_json
 
 from . import (
     get_ai_character_list,
@@ -17,6 +18,7 @@ from . import (
 )
 
 
+@dataclass_json
 @dataclass
 class Movie:
     title: str = ""
@@ -29,6 +31,7 @@ class Movie:
         return json.dumps(self.to_dict(), indent=4)
 
 
+@dataclass_json
 @dataclass
 class Writer:
     name: str = ""
@@ -44,6 +47,7 @@ class Writer:
         return json.dumps(self.to_dict(), indent=4)
 
 
+@dataclass_json
 @dataclass
 class Producer:
     name: str = ""
@@ -56,6 +60,7 @@ class Producer:
         return json.dumps(self.to_dict(), indent=4)
 
 
+@dataclass_json
 @dataclass
 class Director:
     name: str = ""
@@ -68,6 +73,7 @@ class Director:
         return json.dumps(self.to_dict(), indent=4)
 
 
+@dataclass_json
 @dataclass
 class Prop:
     name: str = ""
@@ -80,6 +86,7 @@ class Prop:
         return json.dumps(self.to_dict(), indent=4)
 
 
+@dataclass_json
 @dataclass
 class Location:
     name: str = ""
@@ -92,6 +99,7 @@ class Location:
         return json.dumps(self.to_dict(), indent=4)
 
 
+@dataclass_json
 @dataclass
 class Character:
     name: str = ""
@@ -105,6 +113,7 @@ class Character:
         return json.dumps(self.to_dict(), indent=4)
 
 
+@dataclass_json
 @dataclass
 class MergeData:
     title: str = ""
@@ -268,6 +277,14 @@ def get_doc_gen_writer(
 ) -> MergeData:
     """Get the merge data for a file."""
 
+    xx = Writer()
+    xx.other_scripts = ["", ""]
+    xx.accomplishments = ["", ""]
+    xx.produced_movies = [Movie(), Movie()]
+    xx.companies_worked_with = ["", ""]
+
+    print(xx.to_json())
+
     # Get character list
     script_producers = get_ai_screen_writer(box_client, file)
 
@@ -277,8 +294,11 @@ def get_doc_gen_writer(
     script_producers.answer = script_producers.answer.replace("```", "")
     # Eliminate the word json form from answer
     script_producers.answer = script_producers.answer.replace("json", "")
+
     json_answer = json.loads(script_producers.answer)
-    merge_data.screen_writer = json_answer.get("screen_writer")
+    writer = Writer.from_dict(json_answer)
+
+    merge_data.screen_writer = writer
 
     return merge_data
 
