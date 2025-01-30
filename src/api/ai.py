@@ -7,7 +7,7 @@ from box_sdk_gen import (
     File,
 )
 
-from .doc_gen_data_classes import MergeData
+from .doc_gen_data_classes import Script
 
 
 def get_ai_plot_summary(client: BoxClient, box_file: File) -> AiResponseFull:
@@ -123,15 +123,15 @@ def get_ai_script_data(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI script data of a Box file.
     """
-    schema = MergeData().json_schema()
+    schema = Script().json_schema()
 
     prompt = (
-        f"retrieve the following data from the movie script: {schema}"
+        f"Retrieve the following data from the movie script: {schema}"
         # "Title, "
         # "Author, "
         # "Genre, "
         # "Date written. "
-        # f"compose this information in json using this format: {schema}"
+        # f"using this json schema: {schema}"
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_extract(prompt, [item])

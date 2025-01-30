@@ -1,4 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import date
+from typing import Optional
 
 from dataclasses_json import dataclass_json
 from dataclasses_jsonschema import JsonSchemaMixin
@@ -125,18 +127,32 @@ class Character(MergeBase):
 
 @dataclass_json
 @dataclass
-class MergeData(MergeBase):
+class Script(MergeBase):
     title: str = ""
     author: str = ""
     genre: str = ""
     date_written: str = ""
-    summary: str = ""
-    character_list: list[Character] = None
-    locations: list[Location] = None
-    props: list[Prop] = None
-    directors: list[Director] = None
-    producers: list[Producer] = None
-    screen_writer: Writer = None
+    date_written_iso: date = field(
+        default=None, metadata={"description": "script written data in iso format"}
+    )
+    plot_summary: str = field(
+        default="",
+        metadata={
+            "description": "A summary of the plot of the movies script.",
+        },
+    )
+
+
+@dataclass_json
+@dataclass
+class MergeData(MergeBase):
+    script: Optional[Script] = None
+    character_list: Optional[list[Character]] = None
+    locations: Optional[list[Location]] = None
+    props: Optional[list[Prop]] = None
+    directors: Optional[list[Director]] = None
+    producers: Optional[list[Producer]] = None
+    screen_writer: Optional[Writer] = None
 
     # def to_dict(self):
     #     return self.__dict__.copy()

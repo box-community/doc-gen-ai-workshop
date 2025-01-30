@@ -22,11 +22,12 @@ def test_api_doc_gen_load_merge_data(box_client: BoxClient, test_sample_file: Fi
     assert test_sample_file.name == "Aliens - by James Cameron.pdf"
 
     merge_data: MergeData = get_doc_gen_script_data(box_client, test_sample_file)
-    assert merge_data.title == "Aliens"
-    assert merge_data.author == "James Cameron"
-    assert merge_data.genre == "Action Horror Sci-Fi Thriller"
-    assert merge_data.date_written == "May 28, 1985"
-    # print(merge_data.to_json())
+    print(merge_data.to_json())
+    assert merge_data.script.title == "Aliens"
+    assert merge_data.script.author == "James Cameron"
+    assert merge_data.script.genre == "Action Horror Sci-Fi Thriller"
+    assert merge_data.script.date_written == "May 28, 1985"
+    assert len(merge_data.script.plot_summary) > 0
 
 
 def test_api_doc_gen_load_script_summary(box_client: BoxClient, test_sample_file: File):

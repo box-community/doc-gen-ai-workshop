@@ -12,10 +12,12 @@ from .ai import (
     get_ai_screen_writer,
     get_ai_script_data,
 )
-from .doc_gen_data_classes import MergeData, Movie, Writer
+from .doc_gen_data_classes import MergeData, Movie, Script, Writer
 
 
-def get_doc_gen_script_data(box_client: BoxClient, file: File) -> MergeData:
+def get_doc_gen_script_data(
+    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+) -> MergeData:
     """Get the merge data for a file."""
 
     # Get script data
@@ -27,25 +29,26 @@ def get_doc_gen_script_data(box_client: BoxClient, file: File) -> MergeData:
     # TODO: Overwrite merge data with script data
     # This initial query picks up the characters list, and the summary
 
-    merge_data = MergeData.from_json(script_data.answer)
+    merge_data.script = Script.from_json(script_data.answer)
 
     return merge_data
 
 
-def get_doc_gen_script_summary(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
-    """Get the merge data for a file."""
+# TODO: Dead code to remove
+# def get_doc_gen_script_summary(
+#     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+# ) -> MergeData:
+#     """Get the merge data for a file."""
 
-    # Get script summary
-    script_summary = get_ai_plot_summary(box_client, file)
+#     # Get script summary
+#     script_summary = get_ai_plot_summary(box_client, file)
 
-    # Eliminate double spacing in answer
-    script_summary.answer = " ".join(script_summary.answer.split())
+#     # Eliminate double spacing in answer
+#     script_summary.answer = " ".join(script_summary.answer.split())
 
-    merge_data.summary = script_summary.answer
+#     merge_data.summary = script_summary.answer
 
-    return merge_data
+#     return merge_data
 
 
 def get_doc_gen_character_list(

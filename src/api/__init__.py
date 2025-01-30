@@ -28,6 +28,7 @@ from .doc_gen_data_classes import (
     Movie,
     Producer,
     Prop,
+    Script,
     Writer,
 )
 from .file_folder import create_folder, upload_file
@@ -61,4 +62,5 @@ __all__ = [
     "Writer",
     "GenericNameDescription",
     "Movie",
+    "Script",
 ]
