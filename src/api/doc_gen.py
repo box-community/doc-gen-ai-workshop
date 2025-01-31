@@ -13,6 +13,7 @@ from .ai import (
 from .doc_gen_data_classes import (
     Character,
     Director,
+    Location,
     MergeData,
     Producer,
     Script,
@@ -36,7 +37,16 @@ def get_doc_gen_script_data(
 
     script_data_dict = json.loads(script_data.answer)
 
-    merge_data.script = Script.from_json(script_data.answer)
+    # merge_data.script = Script.from_dict(script_data_dict)
+    merge_data.script = Script()
+    merge_data.script.title = script_data_dict.get("title")
+    merge_data.script.author = script_data_dict.get("author")
+    merge_data.script.genre = script_data_dict.get("genre")
+    merge_data.script.date_written = script_data_dict.get("date_written")
+    merge_data.script.date_written_iso = script_data_dict.get("date_written_iso")
+    merge_data.script.plot_summary = script_data_dict.get("plot_summary")
+    merge_data.script.props = script_data_dict.get("props")
+    # merge_data.script.locations = script_data_dict.get("locations")
 
     return merge_data
 
@@ -144,13 +154,20 @@ def get_doc_gen_smart_load(
 
     director_list = json.dumps(answer_dict.get("directors"))
     producer_list = json.dumps(answer_dict.get("producers"))
+    location_list = json.dumps(answer_dict.get("locations"))
+    prop_list = json.dumps(answer_dict.get("props"))
+
     directors = Director.schema().loads(director_list, many=True)
     producers = Producer.schema().loads(producer_list, many=True)
     writer = Writer.from_dict(answer_dict.get("writer"))
+    locations = Location.schema().loads(location_list, many=True)
+    props = Location.schema().loads(prop_list, many=True)
 
     merge_data.directors = directors
     merge_data.producers = producers
     merge_data.screen_writer = writer
+    merge_data.script.locations = locations
+    merge_data.script.props = props
 
     return merge_data
 

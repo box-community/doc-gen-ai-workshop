@@ -127,10 +127,15 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
     ]
     writer.companies_worked_with = ["Company 1", "Company 2"]
 
+    locations = [Location(name="Location Name", description="Location Description")]
+    props = [Prop(name="Prop Name", description="Prop Description")]
+
     sample_dict = {}
     sample_dict["directors"] = directors
     sample_dict["producers"] = producers
     sample_dict["writer"] = writer
+    sample_dict["locations"] = locations
+    sample_dict["props"] = props
 
     mode = CreateAiAskMode.SINGLE_ITEM_QA
 
@@ -151,6 +156,12 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
         "If the screen writer does have movies that were produced, "
         "Include a separate bullet list summary of grossed revenue for each past movie. "
         "Include a separate bullet list of the companies the screen writer has worked with. "
+        # Locations
+        "Locations: Provide a list of up to 10 locations "
+        "with a one sentence description for each location. "
+        # Props
+        "Props: Provide a list of up to 10 props "
+        "with a one sentence description for each prop. "
         # Format
         f"format the output this directors list in a json format using this example: {sample_dict}"
     )
@@ -163,53 +174,21 @@ def get_ai_script_data_extract(client: BoxClient, box_file: File) -> AiResponseF
     Get AI script data of a Box file.
     """
 
-    # Sample object
-    # script = Script(
-    #     title="Script Title",
-    #     author="Author Name",
-    #     genre="Genre",
-    #     date_written="Date Written",
-    #     date_written_iso="Date Written ISO format",
-    #     plot_summary="Plot Summary",
-    # )
-    # script.locations = [
-    #     Location(name="Location Name 1", description="Location Description 1"),
-    #     Location(name="Location Name 2", description="Location Description 2"),
-    #     Location(name="Location Name 3", description="Location Description 3"),
-    #     Location(name="Location Name 4", description="Location Description 4"),
-    #     Location(name="Location Name 5", description="Location Description 5"),
-    # ]
-    # script.props = [
-    #     Prop(name="Prop Name 1", description="Prop Description 1"),
-    #     Prop(name="Prop Name 2", description="Prop Description 2"),
-    #     Prop(name="Prop Name 3", description="Prop Description 3"),
-    #     Prop(name="Prop Name 4", description="Prop Description 4"),
-    #     Prop(name="Prop Name 5", description="Prop Description 5"),
-    # ]
-
     script_schema = Script().json_schema()
-    # Add min max elements to locations
+    # # Add min max elements to locations
     # script_schema["allOf"][1]["properties"]["locations"]["minItems"] = 1
     # script_schema["allOf"][1]["properties"]["locations"]["maxItems"] = 10
 
-    # # Add min max elements to props
+    # # # Add min max elements to props
     # script_schema["allOf"][1]["properties"]["props"]["minItems"] = 1
     # script_schema["allOf"][1]["properties"]["props"]["maxItems"] = 10
 
-    # print(json.dumps(script_schema, indent=2))
+    # The AI seems to be hallucinating for locations and props
+    # so we will remove them from the schema and put them in the aks endpoint
+    script_schema["allOf"][1]["properties"].pop("locations")
+    script_schema["allOf"][1]["properties"].pop("props")
 
-    # prompt = f"Retrieve the following data from the movie script: {script_schema}"
     prompt = f"{script_schema}"
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     # return client.ai.create_ai_extract_structured(prompt, [item])
     return client.ai.create_ai_extract(prompt, [item])
-
-
-def get_ai_script_data_extract_structured(
-    client: BoxClient, box_file: File
-) -> AiResponseFull:
-    field = CreateAiExtractStructuredFields()
-
-    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
-
-    return client.ai.create_ai_extract_structured([item])
