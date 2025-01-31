@@ -23,16 +23,13 @@ from .doc_gen_data_classes import (
 def get_doc_gen_script_data(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
-    """Get the merge data for a file."""
+    """returns the script data from the AI"""
 
     # Get script data
     script_data = get_ai_script_data(box_client, file)
 
     # Eliminate double spacing in answer
     script_data.answer = " ".join(script_data.answer.split())
-    # print()
-    # print(script_data.answer)
-    # print()
 
     merge_data.script = Script.from_json(script_data.answer)
 
@@ -42,7 +39,7 @@ def get_doc_gen_script_data(
 def get_doc_gen_character_list(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
-    """Get the merge data for a file."""
+    """Returns the character list from the AI"""
 
     # Get character list
     script_character_list = get_ai_character_list(box_client, file)
@@ -63,7 +60,7 @@ def get_doc_gen_character_list(
 def get_doc_gen_directors(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
-    """Get the merge data for a file."""
+    """Returns the director list from the AI"""
 
     # Get character list
     script_directors = get_ai_director_recommendations(box_client, file)
@@ -84,7 +81,7 @@ def get_doc_gen_directors(
 def get_doc_gen_producers(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
-    """Get the merge data for a file."""
+    """Returns the producer list from the AI"""
 
     # Get character list
     script_producers = get_ai_producer_recommendations(box_client, file)
@@ -105,7 +102,7 @@ def get_doc_gen_producers(
 def get_doc_gen_writer(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
-    """Get the merge data for a file."""
+    """Returns the writer from the AI"""
 
     script_writer = get_ai_screen_writer(box_client, file)
 
@@ -126,6 +123,8 @@ def get_doc_gen_writer(
 def get_doc_gen_smart_load(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
+    """Returns directors, producers and writer data from the AI"""
+
     ai_answer = get_ai_smart_load(box_client, file)
 
     # Eliminate double spacing in answer
@@ -154,13 +153,10 @@ def get_doc_gen_smart_load(
 def get_doc_gen_script_data_full(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
-    """Get the merge data for a file."""
+    """Returns all the data from the AI"""
 
     merge_data = get_doc_gen_script_data(box_client, file, merge_data)
     merge_data = get_doc_gen_character_list(box_client, file, merge_data)
     merge_data = get_doc_gen_smart_load(box_client, file, merge_data)
-    # merge_data = get_doc_gen_directors(box_client, file, merge_data)
-    # merge_data = get_doc_gen_producers(box_client, file, merge_data)
-    # merge_data = get_doc_gen_writer(box_client, file, merge_data)
 
     return merge_data
