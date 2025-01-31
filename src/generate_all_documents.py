@@ -1,10 +1,9 @@
 import json
-import random
+import logging
 from datetime import datetime
 from pathlib import Path
 from time import sleep
 
-from box_sdk_gen import BoxClient, File, Folder, Items
 from tqdm import tqdm
 
 from api import MergeData, get_doc_gen_script_data_full
@@ -32,7 +31,11 @@ def main() -> None:
     output_folder = Path("output")
     output_folder.mkdir(parents=True, exist_ok=True)
     error_log_file = (
-        output_folder / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_log.txt"
+        output_folder / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_error_log.txt"
+    )
+    logging.basicConfig(
+        filename=error_log_file,
+        level=logging.ERROR,
     )
     with tqdm(total=len(box_files)) as progress_bar:
         for box_file in box_files:
@@ -56,14 +59,15 @@ def main() -> None:
                     json.dump(merge_data.to_dict(), f, indent=4)
                 progress_bar.update(1)
 
-            except Exception:
+            except Exception as e:
                 progress_bar.write(
                     f"\tError processing {box_file.name} [{box_file.id}]"
                 )
-                # Log the file name and id in a separate file under the output directory
 
-                with error_log_file.open("a") as f:
-                    f.write(f"{box_file.name} [{box_file.id}]\n")
+                # Log the exception details on a separate log file using logger
+                logging.error(f"Error processing {box_file.name} [{box_file.id}]")
+                logging.error(e)
+                logging.info("-")
                 progress_bar.update(1)
                 sleep(0.5)
                 continue

@@ -1,6 +1,6 @@
 import random
 
-from box_sdk_gen import BoxClient, File, Folder, Items
+from box_sdk_gen import BoxClient, File
 
 from api import MergeData, get_doc_gen_script_data_full
 from client import AppConfig

@@ -1,15 +1,11 @@
-import json
-
 from box_sdk_gen import (
     AiItemBase,
     AiItemBaseTypeField,
     AiResponseFull,
     BoxClient,
     CreateAiAskMode,
-    CreateAiExtractStructuredFields,
     File,
 )
-from dataclasses_jsonschema import JsonSchemaMixin, SchemaType
 
 from .doc_gen_data_classes import (
     Character,
@@ -185,10 +181,16 @@ def get_ai_script_data_extract(client: BoxClient, box_file: File) -> AiResponseF
 
     # The AI seems to be hallucinating for locations and props
     # so we will remove them from the schema and put them in the aks endpoint
-    script_schema["allOf"][1]["properties"].pop("locations")
-    script_schema["allOf"][1]["properties"].pop("props")
+    # checking if locations and props exist in the schema
+
+    properties = script_schema["allOf"][1]["properties"]
+
+    if "locations" in properties:
+        properties.pop("locations")
+
+    if "props" in properties:
+        properties.pop("props")
 
     prompt = f"{script_schema}"
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
-    # return client.ai.create_ai_extract_structured(prompt, [item])
     return client.ai.create_ai_extract(prompt, [item])

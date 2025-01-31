@@ -32,6 +32,12 @@ def get_doc_gen_script_data(
     # Eliminate double spacing in answer
     script_data.answer = " ".join(script_data.answer.split())
 
+    # Eliminate ``` from answer
+    script_data.answer = script_data.answer.replace("```", "")
+
+    # Eliminate the word json form from answer
+    script_data.answer = script_data.answer.replace("json", "")
+
     # Eliminate \\" from answer and replace by '
     script_data.answer = script_data.answer.replace('\\"', "'")
 
