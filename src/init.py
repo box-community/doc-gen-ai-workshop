@@ -1,5 +1,10 @@
 import os
 
+from box_sdk_gen import (
+    DocGenTemplateBaseV2025R0,
+    FileReferenceV2025R0,
+    FileReferenceV2025R0TypeField,
+)
 from tqdm import tqdm
 
 from api import create_folder, upload_file
@@ -28,6 +33,9 @@ def main():
     template_folder = create_folder(client, "Templates", base_folder)
     print(f"Created folder: {template_folder.name}")
 
+    merge_folder = create_folder(client, "Merge Docs", base_folder)
+    print(f"Created folder: {merge_folder.name}")
+
     # upload template folder to box
     local_template = "sample_files/template/MovieScriptSummaryTemplate.docx"
 
@@ -36,9 +44,19 @@ def main():
     )
     print(f"Uploaded template: {box_template.name}")
 
+    # Set uploaded file as template
+    file_reference = FileReferenceV2025R0(box_template.id)
+    box_doc_gen_template: DocGenTemplateBaseV2025R0 = (
+        client.docgen_template.create_docgen_template_v2025_r0(file_reference)
+    )
+
     # update .env file with the new folder ids
     ap.set_workshop_folder_ids(
-        base_folder.id, scripts_folder.id, template_folder.id, box_template.id
+        base_folder.id,
+        scripts_folder.id,
+        template_folder.id,
+        box_doc_gen_template.file.id,
+        merge_folder.id,
     )
     ap.write_env_file()
     ap.reload_dotenv()

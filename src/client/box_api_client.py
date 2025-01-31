@@ -38,6 +38,7 @@ class AppConfig:
         self.scripts_folder_id = os.getenv("BOX_SCRIPTS_FOLDER_ID", "")
         self.templates_folder_id = os.getenv("BOX_TEMPLATES_FOLDER_ID", "")
         self.doc_gen_template_file_id = os.getenv("BOX_DOC_GEN_TEMPLATE_FILE_ID", "")
+        self.merge_folder_id = os.getenv("BOX_MERGE_FOLDER_ID", "")
 
     def get_box_client(self) -> BoxClient:
         return BoxClient(self.auth)
@@ -61,6 +62,7 @@ class AppConfig:
             f.write(f"BOX_WORKSHOP_FOLDER_ID = {self.workshop_folder_id}\n")
             f.write(f"BOX_SCRIPTS_FOLDER_ID = {self.scripts_folder_id}\n")
             f.write(f"BOX_TEMPLATES_FOLDER_ID = {self.templates_folder_id}\n")
+            f.write(f"BOX_MERGE_FOLDER_ID = {self.merge_folder_id}\n")
             f.write("\n")
             f.write("# Doc Gen template file id\n")
             f.write(f"BOX_DOC_GEN_TEMPLATE_FILE_ID = {self.doc_gen_template_file_id}\n")
@@ -71,11 +73,13 @@ class AppConfig:
         scripts_folder_id: str,
         templates_folder_id: str,
         doc_gen_template_file_id: str,
+        merge_folder_id: str,
     ):
         self.workshop_folder_id = workshop_folder_id
         self.scripts_folder_id = scripts_folder_id
         self.templates_folder_id = templates_folder_id
         self.doc_gen_template_file_id = doc_gen_template_file_id
+        self.merge_folder_id = merge_folder_id
 
     def reload_dotenv(self):
         for key, value in os.environ.items():
