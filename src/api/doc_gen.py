@@ -7,7 +7,7 @@ from .ai import (
     get_ai_director_recommendations,
     get_ai_producer_recommendations,
     get_ai_screen_writer,
-    get_ai_script_data,
+    get_ai_script_data_extract,
     get_ai_smart_load,
 )
 from .doc_gen_data_classes import (
@@ -26,10 +26,15 @@ def get_doc_gen_script_data(
     """returns the script data from the AI"""
 
     # Get script data
-    script_data = get_ai_script_data(box_client, file)
+    script_data = get_ai_script_data_extract(box_client, file)
 
     # Eliminate double spacing in answer
     script_data.answer = " ".join(script_data.answer.split())
+
+    # Eliminate \\" from answer and replace by '
+    script_data.answer = script_data.answer.replace('\\"', "'")
+
+    script_data_dict = json.loads(script_data.answer)
 
     merge_data.script = Script.from_json(script_data.answer)
 

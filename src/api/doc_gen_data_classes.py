@@ -9,11 +9,20 @@ from dataclasses_jsonschema import JsonSchemaMixin
 @dataclass_json
 @dataclass
 class MergeBase(JsonSchemaMixin):
-    def to_dict(self):
-        return super().to_dict()
+    def to_dict(
+        self,
+        omit_none: bool = True,
+        validate: bool = False,
+        validate_enums: bool = True,
+    ):
+        return super().to_dict(
+            omit_none,
+            validate,
+            validate_enums,
+        )
 
-    def to_json(self):
-        return super().to_json()
+    def to_json(self, **json_kwargs):
+        return super().to_json(**json_kwargs)
 
 
 @dataclass_json
@@ -98,7 +107,7 @@ class Script(MergeBase):
     locations: list[Location] = field(
         default=None,
         metadata={
-            "description": "read this movie script and give me a list of up to 10 locations "
+            "description": "read this movie script and give me a list of up to a maximum 10 locations "
             "with one sentence description for each location "
             "do not suggest the original movie locations if the movie has been already produced. "
         },

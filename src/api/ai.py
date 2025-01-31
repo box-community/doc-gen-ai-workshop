@@ -1,16 +1,22 @@
+import json
+
 from box_sdk_gen import (
     AiItemBase,
     AiItemBaseTypeField,
     AiResponseFull,
     BoxClient,
     CreateAiAskMode,
+    CreateAiExtractStructuredFields,
     File,
 )
+from dataclasses_jsonschema import JsonSchemaMixin, SchemaType
 
 from .doc_gen_data_classes import (
     Character,
     Director,
+    Location,
     Producer,
+    Prop,
     Script,
     Writer,
 )
@@ -152,12 +158,58 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
     return client.ai.create_ai_ask(mode, prompt, [item])
 
 
-def get_ai_script_data(client: BoxClient, box_file: File) -> AiResponseFull:
+def get_ai_script_data_extract(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI script data of a Box file.
     """
-    script_schema = Script().json_schema()
 
-    prompt = f"Retrieve the following data from the movie script: {script_schema}"
+    # Sample object
+    # script = Script(
+    #     title="Script Title",
+    #     author="Author Name",
+    #     genre="Genre",
+    #     date_written="Date Written",
+    #     date_written_iso="Date Written ISO format",
+    #     plot_summary="Plot Summary",
+    # )
+    # script.locations = [
+    #     Location(name="Location Name 1", description="Location Description 1"),
+    #     Location(name="Location Name 2", description="Location Description 2"),
+    #     Location(name="Location Name 3", description="Location Description 3"),
+    #     Location(name="Location Name 4", description="Location Description 4"),
+    #     Location(name="Location Name 5", description="Location Description 5"),
+    # ]
+    # script.props = [
+    #     Prop(name="Prop Name 1", description="Prop Description 1"),
+    #     Prop(name="Prop Name 2", description="Prop Description 2"),
+    #     Prop(name="Prop Name 3", description="Prop Description 3"),
+    #     Prop(name="Prop Name 4", description="Prop Description 4"),
+    #     Prop(name="Prop Name 5", description="Prop Description 5"),
+    # ]
+
+    script_schema = Script().json_schema()
+    # Add min max elements to locations
+    # script_schema["allOf"][1]["properties"]["locations"]["minItems"] = 1
+    # script_schema["allOf"][1]["properties"]["locations"]["maxItems"] = 10
+
+    # # Add min max elements to props
+    # script_schema["allOf"][1]["properties"]["props"]["minItems"] = 1
+    # script_schema["allOf"][1]["properties"]["props"]["maxItems"] = 10
+
+    # print(json.dumps(script_schema, indent=2))
+
+    # prompt = f"Retrieve the following data from the movie script: {script_schema}"
+    prompt = f"{script_schema}"
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+    # return client.ai.create_ai_extract_structured(prompt, [item])
     return client.ai.create_ai_extract(prompt, [item])
+
+
+def get_ai_script_data_extract_structured(
+    client: BoxClient, box_file: File
+) -> AiResponseFull:
+    field = CreateAiExtractStructuredFields()
+
+    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+
+    return client.ai.create_ai_extract_structured([item])

@@ -62,7 +62,6 @@ def test_api_doc_gen_smart_load(box_client: BoxClient, test_sample_file: File):
     assert len(merge_data.screen_writer.companies_worked_with) > 0
 
 
-# TODO: Load Producers and Directors and Writers in the same request
 def test_api_doc_gen_load_directors(box_client: BoxClient, test_sample_file: File):
     """Test the director list API doc generation."""
 

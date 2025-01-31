@@ -3,7 +3,7 @@ from .ai import (
     get_ai_director_recommendations,
     get_ai_producer_recommendations,
     get_ai_screen_writer,
-    get_ai_script_data,
+    get_ai_script_data_extract,
     get_ai_smart_load,
 )
 from .doc_gen import (
@@ -36,7 +36,7 @@ __all__ = [
     "get_ai_director_recommendations",
     "get_ai_producer_recommendations",
     "get_ai_screen_writer",
-    "get_ai_script_data",
+    "get_ai_script_data_extract",
     "get_doc_gen_script_data",
     "MergeData",
     "get_doc_gen_character_list",
