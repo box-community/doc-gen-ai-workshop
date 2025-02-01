@@ -27,6 +27,17 @@ def get_random_movie_data() -> str:
     return movie_data, file_name
 
 
+def get_sample_movie_data() -> str:
+    """
+    Get a sample movie script from the local output/*.json folder.
+    """
+    # read Aliens - by James Cameron.pdf_1763008939159 in the output folder
+    json_file = "Aliens - by James Cameron.pdf_1763008939159.json"
+    movie_data = json.load(open(f"output/{json_file}"))
+    file_name = json_file.split(".")[0]
+    return movie_data, file_name
+
+
 def main() -> None:
     """
     Main function to generate documents
@@ -41,12 +52,15 @@ def main() -> None:
     print(f"Connected to Box API as {user.name}")
 
     # Get a random file from the scripts folder
-    movie_data, file_name = get_random_movie_data()
+    source_data, file_name = get_sample_movie_data()
+    movie_data = {}
+    movie_data["data"] = source_data
 
     # Read tags from template file
     tags: DocGenTagsV2025R0 = client.docgen_template.get_docgen_template_tags_v2025_r0(
         ap.doc_gen_template_file_id
     )
+    print(f"\nTags: {tags.to_dict()}\n\n")
 
     print(f"Using movie data from {file_name}")
 
