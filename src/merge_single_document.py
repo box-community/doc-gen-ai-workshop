@@ -60,7 +60,9 @@ def main() -> None:
     tags: DocGenTagsV2025R0 = client.docgen_template.get_docgen_template_tags_v2025_r0(
         ap.doc_gen_template_file_id
     )
-    print(f"\nTags: {tags.to_dict()}\n\n")
+    # print(f"\nTags: {tags.to_dict()}\n\n")
+
+    print(f"\n\n{movie_data}\n\n")
 
     print(f"Using movie data from {file_name}")
 
