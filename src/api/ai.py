@@ -185,16 +185,16 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
         "Props: Provide a list of up to 10 props "
         "with a one sentence description for each prop. "
         # Accomplishments, Other scripts, Produced movies, Companies worked with
-        "Other scripts: Provide a list of up to 5 other scrips the screen writer has written. "
+        "Other scripts: Provide a list of up to 5 scripts written by the author. "
         # Accomplishments
-        "Accomplishments: Provide a list of up to 5 accomplishments from the screen writer. "
+        "Accomplishments: Provide a list of up to 5 accomplishments from author. "
         # Produced movies
-        "Produced Movies: Provide a list of up to 5 other movies that the screen writer has produced, "
+        "Produced Movies: Provide a list of up to 5 other movies associated with this author, "
         "including the grossed revenue for each past movie. "
         # Companies worked with
-        "Companies Worked With: Provide a list of up to 5 companies the screen writer has worked with. "
+        "Companies Worked With: Provide a list of up to 5 companies the author has worked with. "
         # Format
-        f"format the output this directors list in a json format using this example: {sample_dict}"
+        f"format the output list in a json format using this example: {sample_dict}"
     )
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
     return client.ai.create_ai_ask(mode, prompt, [item])
