@@ -132,7 +132,7 @@ class Script(MergeBase):
     plot_summary: str = field(
         default="",
         metadata={
-            "description": "A summary of the plot of the movies script.",
+            "description": "A summary of the plot of this movie script.",
         },
     )
 

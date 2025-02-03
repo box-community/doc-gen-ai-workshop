@@ -9,7 +9,6 @@ from box_sdk_gen import (
 
 from .doc_gen_data_classes import (
     Accomplishment,
-    Actor,
     Character,
     CompanyWorked,
     Director,
@@ -128,6 +127,7 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI smart load of a Box file.
     """
+    plot_summary = ""
     directors = [Director("Director name", "Director description")]
 
     producers = [Producer("Director name", "Director description")]
@@ -162,11 +162,14 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
     sample_dict["other_scripts"] = other_scripts
     sample_dict["produced_movies"] = produced_movies
     sample_dict["companies_worked_with"] = companies_worked_with
+    sample_dict["plot_summary"] = plot_summary
 
     mode = CreateAiAskMode.SINGLE_ITEM_QA
 
     prompt = (
         "read this movie script and provide  me with the following:"
+        # Plot summary
+        "Plot Summary: Provide a summary of the plot of this movie script. "
         # Directors
         "Recommended Directors: Suggest a list of 5 of your recommended directors "
         "with one sentence description for each director "
@@ -175,14 +178,6 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
         "Recommended Producers: Suggest a list of 5 of your recommended producers "
         "with one sentence description for each producer "
         "do not suggest the original movie producer if the movie has been already produced. "
-        # TODO: Dead code remove
-        # Screen Writer
-        # "Script Writer: information on the script writer "
-        # "include other scrips the screen writer has written "
-        # "and a summary of accomplishments. "
-        # "If the screen writer does have movies that were produced, "
-        # "Include a separate bullet list summary of grossed revenue for each past movie. "
-        # "Include a separate bullet list of the companies the screen writer has worked with. "
         # Locations
         "Locations: Provide a list of up to 10 locations "
         "with a one sentence description for each location. "
@@ -224,6 +219,9 @@ def get_ai_script_data_extract(client: BoxClient, box_file: File) -> AiResponseF
     # checking if locations and props exist in the schema
 
     properties = script_schema["allOf"][1]["properties"]
+
+    if "plot_summary" in properties:
+        properties.pop("plot_summary")
 
     if "locations" in properties:
         properties.pop("locations")

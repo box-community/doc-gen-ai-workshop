@@ -124,29 +124,6 @@ def get_doc_gen_producers(
     return merge_data
 
 
-# TODO : Dead code remove
-
-# def get_doc_gen_writer(
-#     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-# ) -> MergeData:
-#     """Returns the writer from the AI"""
-
-#     script_writer = get_ai_screen_writer(box_client, file)
-
-#     # Eliminate double spacing in answer
-#     script_writer.answer = " ".join(script_writer.answer.split())
-#     # Eliminate ``` from answer
-#     script_writer.answer = script_writer.answer.replace("```", "")
-#     # Eliminate the word json form from answer
-#     script_writer.answer = script_writer.answer.replace("json", "")
-#     script_writer_dict = json.loads(script_writer.answer)
-#     script_writer_dict = script_writer_dict.get("Writer")
-#     writer = Writer.from_dict(script_writer_dict)
-#     merge_data.screen_writer = writer
-
-#     return merge_data
-
-
 def get_doc_gen_smart_load(
     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
 ) -> MergeData:
@@ -184,7 +161,7 @@ def get_doc_gen_smart_load(
     companies_worked_with = CompanyWorked.schema().loads(
         companies_worked_with_list, many=True
     )
-
+    merge_data.script.plot_summary = answer_dict.get("plot_summary")
     merge_data.directors = directors
     merge_data.producers = producers
     # merge_data.screen_writer = writer
