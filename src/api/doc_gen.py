@@ -6,18 +6,22 @@ from .ai import (
     get_ai_character_list,
     get_ai_director_recommendations,
     get_ai_producer_recommendations,
-    get_ai_screen_writer,
+    # get_ai_screen_writer,
     get_ai_script_data_extract,
     get_ai_smart_load,
 )
 from .doc_gen_data_classes import (
+    Accomplishment,
     Character,
+    CompanyWorked,
     Director,
     Location,
     MergeData,
+    Movie,
+    OtherScript,
     Producer,
     Script,
-    Writer,
+    # Writer,
 )
 
 
@@ -120,25 +124,27 @@ def get_doc_gen_producers(
     return merge_data
 
 
-def get_doc_gen_writer(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
-    """Returns the writer from the AI"""
+# TODO : Dead code remove
 
-    script_writer = get_ai_screen_writer(box_client, file)
+# def get_doc_gen_writer(
+#     box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
+# ) -> MergeData:
+#     """Returns the writer from the AI"""
 
-    # Eliminate double spacing in answer
-    script_writer.answer = " ".join(script_writer.answer.split())
-    # Eliminate ``` from answer
-    script_writer.answer = script_writer.answer.replace("```", "")
-    # Eliminate the word json form from answer
-    script_writer.answer = script_writer.answer.replace("json", "")
-    script_writer_dict = json.loads(script_writer.answer)
-    script_writer_dict = script_writer_dict.get("Writer")
-    writer = Writer.from_dict(script_writer_dict)
-    merge_data.screen_writer = writer
+#     script_writer = get_ai_screen_writer(box_client, file)
 
-    return merge_data
+#     # Eliminate double spacing in answer
+#     script_writer.answer = " ".join(script_writer.answer.split())
+#     # Eliminate ``` from answer
+#     script_writer.answer = script_writer.answer.replace("```", "")
+#     # Eliminate the word json form from answer
+#     script_writer.answer = script_writer.answer.replace("json", "")
+#     script_writer_dict = json.loads(script_writer.answer)
+#     script_writer_dict = script_writer_dict.get("Writer")
+#     writer = Writer.from_dict(script_writer_dict)
+#     merge_data.screen_writer = writer
+
+#     return merge_data
 
 
 def get_doc_gen_smart_load(
@@ -162,18 +168,32 @@ def get_doc_gen_smart_load(
     producer_list = json.dumps(answer_dict.get("producers"))
     location_list = json.dumps(answer_dict.get("locations"))
     prop_list = json.dumps(answer_dict.get("props"))
+    accomplishments_list = json.dumps(answer_dict.get("accomplishments"))
+    other_scripts_list = json.dumps(answer_dict.get("other_scripts"))
+    produced_movies_list = json.dumps(answer_dict.get("produced_movies"))
+    companies_worked_with_list = json.dumps(answer_dict.get("companies_worked_with"))
 
     directors = Director.schema().loads(director_list, many=True)
     producers = Producer.schema().loads(producer_list, many=True)
-    writer = Writer.from_dict(answer_dict.get("writer"))
+    # writer = Writer.from_dict(answer_dict.get("writer"))
     locations = Location.schema().loads(location_list, many=True)
     props = Location.schema().loads(prop_list, many=True)
+    accomplishments = Accomplishment.schema().loads(accomplishments_list, many=True)
+    other_scripts = OtherScript.schema().loads(other_scripts_list, many=True)
+    produced_movies = Movie.schema().loads(produced_movies_list, many=True)
+    companies_worked_with = CompanyWorked.schema().loads(
+        companies_worked_with_list, many=True
+    )
 
     merge_data.directors = directors
     merge_data.producers = producers
-    merge_data.screen_writer = writer
+    # merge_data.screen_writer = writer
     merge_data.script.locations = locations
     merge_data.script.props = props
+    merge_data.accomplishments = accomplishments
+    merge_data.other_scripts = other_scripts
+    merge_data.produced_movies = produced_movies
+    merge_data.companies_worked_with = companies_worked_with
 
     return merge_data
 

@@ -34,6 +34,12 @@ class GenericNameDescription(MergeBase):
 
 @dataclass_json
 @dataclass
+class GenericDescription(MergeBase):
+    description: str = ""
+
+
+@dataclass_json
+@dataclass
 class Movie(MergeBase):
     title: str = ""
     gross_revenue: str = ""
@@ -41,12 +47,31 @@ class Movie(MergeBase):
 
 @dataclass_json
 @dataclass
-class Writer(MergeBase):
-    name: str = ""
-    accomplishments: list[str] = None
-    other_scripts: list[str] = None
-    produced_movies: list[Movie] = None
-    companies_worked_with: list[str] = None
+class Accomplishment(GenericDescription):
+    pass
+
+
+@dataclass_json
+@dataclass
+class OtherScript(GenericDescription):
+    pass
+
+
+@dataclass_json
+@dataclass
+class CompanyWorked(GenericDescription):
+    pass
+
+
+# TODO: Dead code, remove it
+# @dataclass_json
+# @dataclass
+# class Writer(MergeBase):
+#     name: str = ""
+#     accomplishments: list[Accomplishment] = None
+#     other_scripts: list[OtherScript] = None
+#     produced_movies: list[Movie] = None
+#     companies_worked_with: list[CompanyWorked] = None
 
 
 @dataclass_json
@@ -75,10 +100,16 @@ class Location(GenericNameDescription):
 
 @dataclass_json
 @dataclass
+class Actor(GenericDescription):
+    pass
+
+
+@dataclass_json
+@dataclass
 class Character(MergeBase):
     name: str = ""
     description: str = ""
-    suggested_actors: list[str] = field(
+    suggested_actors: list[Actor] = field(
         default=None,
         metadata={
             "description": "suggest 5 actors this character "
@@ -133,16 +164,11 @@ class MergeData(MergeBase):
             "with one sentence description ",
         },
     )
-    # locations: Optional[list[Location]] = field(
-    #     default=None,
-    #     metadata={
-    #         "description": "read this movie script and give me a list of locations "
-    #         "with one sentence description for each location "
-    #         "do not suggest the original movie locations if the movie has been already produced. "
-    #         "compose this locations list in a json format ",
-    #     },
-    # )
-    # props: Optional[list[Prop]] = None
+
     directors: Optional[list[Director]] = None
     producers: Optional[list[Producer]] = None
-    screen_writer: Optional[Writer] = None
+    # screen_writer: Optional[Writer] = None
+    accomplishments: Optional[list[Accomplishment]] = None
+    other_scripts: Optional[list[OtherScript]] = None
+    produced_movies: Optional[list[Movie]] = None
+    companies_worked_with: Optional[list[CompanyWorked]] = None

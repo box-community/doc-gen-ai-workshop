@@ -52,6 +52,7 @@ def main() -> None:
     print(f"Connected to Box API as {user.name}")
 
     # Get a random file from the scripts folder
+    # TODO: put random movie back
     source_data, file_name = get_sample_movie_data()
     movie_data = {}
     movie_data["data"] = source_data
@@ -62,7 +63,7 @@ def main() -> None:
     )
     # print(f"\nTags: {tags.to_dict()}\n\n")
 
-    print(f"\n\n{movie_data}\n\n")
+    print(f"\n\n{json.dumps(movie_data, indent=4)}\n\n")
 
     print(f"Using movie data from {file_name}")
 

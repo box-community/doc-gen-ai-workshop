@@ -8,13 +8,17 @@ from box_sdk_gen import (
 )
 
 from .doc_gen_data_classes import (
+    Accomplishment,
+    Actor,
     Character,
+    CompanyWorked,
     Director,
     Location,
+    Movie,
+    OtherScript,
     Producer,
     Prop,
     Script,
-    Writer,
 )
 
 
@@ -22,8 +26,16 @@ def get_ai_character_list(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI character list of a Box file.
     """
+    suggested_actors = [
+        Actor(description="Actor Name 1"),
+        Actor(description="Actor Name 2"),
+    ]
     sample_json_object = [
-        Character(name="Character Name", description="Character Description")
+        Character(
+            name="Character Name",
+            description="Character Description",
+            suggested_actors=suggested_actors,
+        )
     ]
     mode = CreateAiAskMode.SINGLE_ITEM_QA
     prompt = (
@@ -79,59 +91,80 @@ def get_ai_producer_recommendations(
     return client.ai.create_ai_ask(mode, prompt, [item])
 
 
-def get_ai_screen_writer(client: BoxClient, box_file: File) -> AiResponseFull:
-    """
-    Get AI screen writer of a Box file.
-    """
-    sample_json_object = Writer(name="Writer Name")
-    sample_json_object.accomplishments = ["Accomplishment 1", "Accomplishment 2"]
-    sample_json_object.other_scripts = ["Script 1", "Script 2"]
-    sample_json_object.produced_movies = [
-        {"title": "Movie 1", "gross_revenue": "1000000"},
-        {"title": "Movie 2", "gross_revenue": "2000000"},
-    ]
-    sample_json_object.companies_worked_with = ["Company 1", "Company 2"]
+# def get_ai_screen_writer(client: BoxClient, box_file: File) -> AiResponseFull:
+#     """
+#     Get AI screen writer of a Box file.
+#     """
+#     sample_json_object = Writer(name="Writer Name")
+#     sample_json_object.accomplishments = [
+#         {"description": "Accomplishment 1"},
+#         {"description": "Accomplishment 2"},
+#     ]
+#     sample_json_object.other_scripts = [
+#         {"description": "Script 1"},
+#         {"description": "Script 2"},
+#     ]
+#     sample_json_object.produced_movies = [
+#         {"title": "Movie 1", "gross_revenue": "1000000"},
+#         {"title": "Movie 2", "gross_revenue": "2000000"},
+#     ]
+#     sample_json_object.companies_worked_with = [
+#         {"description": "Company 1"},
+#         {"description": "Company 2"},
+#     ]
 
-    mode = CreateAiAskMode.SINGLE_ITEM_QA
-    prompt = (
-        "read this movie script and provide me information on the script writer "
-        "include other scrips the screen writer has written "
-        "and a summary of accomplishments. "
-        "If the screen writer does have movies that were produced, "
-        "Include a separate bullet list summary of grossed revenue for each past movie. "
-        "Include a separate bullet list of the companies the screen writer has worked with. "
-        f"format the output this directors list in a json format using this example: {sample_json_object}"
-    )
-    item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
-    return client.ai.create_ai_ask(mode, prompt, [item])
+#     mode = CreateAiAskMode.SINGLE_ITEM_QA
+#     prompt = (
+#         "read this movie script and provide me information on the script writer "
+#         "include other scrips the screen writer has written "
+#         "and a summary of accomplishments. "
+#         "If the screen writer does have movies that were produced, "
+#         "Include a separate bullet list summary of grossed revenue for each past movie. "
+#         "Include a separate bullet list of the companies the screen writer has worked with. "
+#         f"format the output this directors list in a json format using this example: {sample_json_object}"
+#     )
+#     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
+#     return client.ai.create_ai_ask(mode, prompt, [item])
 
 
 def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI smart load of a Box file.
     """
-    directors = [Director(name="Director name", description="Director description")]
+    directors = [Director("Director name", "Director description")]
 
-    producers = [Producer(name="Director name", description="Director description")]
+    producers = [Producer("Director name", "Director description")]
 
-    writer = Writer(name="Writer Name")
-    writer.accomplishments = ["Accomplishment 1", "Accomplishment 2"]
-    writer.other_scripts = ["Script 1", "Script 2"]
-    writer.produced_movies = [
-        {"title": "Movie 1", "gross_revenue": "1000000"},
-        {"title": "Movie 2", "gross_revenue": "2000000"},
+    accomplishments = [
+        Accomplishment("Accomplishment 1"),
+        Accomplishment("Accomplishment 2"),
     ]
-    writer.companies_worked_with = ["Company 1", "Company 2"]
+    other_scripts = [
+        OtherScript("Script 1"),
+        OtherScript("Script 2"),
+    ]
+    produced_movies = [
+        Movie("Movie 1", "1000000"),
+        Movie("Movie 2", "2000000"),
+    ]
+    companies_worked_with = [
+        CompanyWorked("Company 1"),
+        CompanyWorked("Company 2"),
+    ]
 
-    locations = [Location(name="Location Name", description="Location Description")]
-    props = [Prop(name="Prop Name", description="Prop Description")]
+    locations = [Location("Location Name", "Location Description")]
+    props = [Prop("Prop Name", "Prop Description")]
 
     sample_dict = {}
     sample_dict["directors"] = directors
     sample_dict["producers"] = producers
-    sample_dict["writer"] = writer
+    # sample_dict["writer"] = writer
     sample_dict["locations"] = locations
     sample_dict["props"] = props
+    sample_dict["accomplishments"] = accomplishments
+    sample_dict["other_scripts"] = other_scripts
+    sample_dict["produced_movies"] = produced_movies
+    sample_dict["companies_worked_with"] = companies_worked_with
 
     mode = CreateAiAskMode.SINGLE_ITEM_QA
 
@@ -145,19 +178,29 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
         "Recommended Producers: Suggest a list of 5 of your recommended producers "
         "with one sentence description for each producer "
         "do not suggest the original movie producer if the movie has been already produced. "
+        # TODO: Dead code remove
         # Screen Writer
-        "Script Writer: information on the script writer "
-        "include other scrips the screen writer has written "
-        "and a summary of accomplishments. "
-        "If the screen writer does have movies that were produced, "
-        "Include a separate bullet list summary of grossed revenue for each past movie. "
-        "Include a separate bullet list of the companies the screen writer has worked with. "
+        # "Script Writer: information on the script writer "
+        # "include other scrips the screen writer has written "
+        # "and a summary of accomplishments. "
+        # "If the screen writer does have movies that were produced, "
+        # "Include a separate bullet list summary of grossed revenue for each past movie. "
+        # "Include a separate bullet list of the companies the screen writer has worked with. "
         # Locations
         "Locations: Provide a list of up to 10 locations "
         "with a one sentence description for each location. "
         # Props
         "Props: Provide a list of up to 10 props "
         "with a one sentence description for each prop. "
+        # Accomplishments, Other scripts, Produced movies, Companies worked with
+        "Other scripts: Provide a list of up to 5 other scrips the screen writer has written. "
+        # Accomplishments
+        "Accomplishments: Provide a list of up to 5 accomplishments from the screen writer. "
+        # Produced movies
+        "Produced Movies: Provide a list of up to 5 other movies that the screen writer has produced, "
+        "including the grossed revenue for each past movie. "
+        # Companies worked with
+        "Companies Worked With: Provide a list of up to 5 companies the screen writer has worked with. "
         # Format
         f"format the output this directors list in a json format using this example: {sample_dict}"
     )
