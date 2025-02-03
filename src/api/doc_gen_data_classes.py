@@ -109,13 +109,14 @@ class Actor(GenericDescription):
 class Character(MergeBase):
     name: str = ""
     description: str = ""
-    suggested_actors: list[Actor] = field(
-        default=None,
-        metadata={
-            "description": "suggest 5 actors this character "
-            "do not suggest the original movie actors if the movie has been already produced."
-        },
-    )
+    suggested_actors: str = ""
+    # suggested_actors: list[Actor] = field(
+    #     default=None,
+    #     metadata={
+    #         "description": "suggest 5 actors this character "
+    #         "do not suggest the original movie actors if the movie has been already produced."
+    #     },
+    # )
 
 
 @dataclass_json

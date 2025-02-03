@@ -26,15 +26,12 @@ def get_ai_character_list(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI character list of a Box file.
     """
-    suggested_actors = [
-        Actor(description="Actor Name 1"),
-        Actor(description="Actor Name 2"),
-    ]
+
     sample_json_object = [
         Character(
             name="Character Name",
             description="Character Description",
-            suggested_actors=suggested_actors,
+            suggested_actors="Actor 1, Actor 2, Actor 3, Actor 4, Actor 5",
         )
     ]
     mode = CreateAiAskMode.SINGLE_ITEM_QA
