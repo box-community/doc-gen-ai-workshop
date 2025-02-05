@@ -2,7 +2,6 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from time import sleep
 
 from tqdm import tqdm
 
@@ -20,7 +19,7 @@ def main() -> None:
 
     # Check Box API connection
     user = client.users.get_user_me()
-    print("\n\n-- Box API --\n")
+    print("\n\n-- Box API --")
     print(f"Connected to Box API as {user.name}")
 
     items = client.folders.get_folder_items(ap.scripts_folder_id, limit=30)
@@ -31,7 +30,7 @@ def main() -> None:
     output_folder = Path("output")
     output_folder.mkdir(parents=True, exist_ok=True)
     error_log_file = (
-        output_folder / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_error_log.txt"
+        output_folder / f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_log.txt"
     )
     logging.basicConfig(
         filename=error_log_file,
@@ -47,7 +46,6 @@ def main() -> None:
                     f"Skipping {box_file.name} [{box_file.id}] as it already exists"
                 )
                 progress_bar.update(1)
-                sleep(0.5)
                 continue
 
             try:
@@ -57,6 +55,7 @@ def main() -> None:
                 # Write this data to a json file
                 with output_file.open("w") as f:
                     json.dump(merge_data.to_dict(), f, indent=4)
+
                 progress_bar.update(1)
 
             except Exception as e:
@@ -67,9 +66,8 @@ def main() -> None:
                 # Log the exception details on a separate log file using logger
                 logging.error(f"Error processing {box_file.name} [{box_file.id}]")
                 logging.error(e)
-                logging.info("-")
+                logging.info("-\n\n")
                 progress_bar.update(1)
-                sleep(0.5)
                 continue
 
 

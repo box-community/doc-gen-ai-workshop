@@ -1,3 +1,4 @@
+import os
 import random
 
 from box_sdk_gen import BoxClient, File
@@ -11,9 +12,14 @@ def get_random_movie_script(client: BoxClient, folder_id) -> File:
     Get a random movie script from a folder.
     """
     items = client.folders.get_folder_items(folder_id, limit=30)
-    files = [item for item in items.entries if item.type == "file"]
+    box_files = [item for item in items.entries if item.type == "file"]
 
-    return random.choice(files)
+    json_files = [f for f in os.listdir("output") if f.endswith(".json")]
+    file_ids = [int(f.split("_")[1].split(".")[0]) for f in json_files]
+
+    box_files = [f for f in box_files if f.id not in file_ids]
+
+    return random.choice(box_files)
 
 
 def main() -> None:
@@ -26,39 +32,18 @@ def main() -> None:
 
     # Check Box API connection
     user = client.users.get_user_me()
-    print("\n\n-- Box API --\n")
+    print("\n\n-- Box API --")
     print(f"Connected to Box API as {user.name}")
 
     # Get a random file from the scripts folder
-    # box_movie_script = get_random_movie_script(client, ap.scripts_folder_id)
-
-    # Aliens - by James Cameron.pdf [1763008939159]
-    # box_movie_script = client.files.get_file_by_id("1763008939159")
-
-    # Hitchhiker's-Guide-to-the-Galaxy-The.pdf [1763001740428]
-    # box_movie_script = client.files.get_file_by_id("1763001740428")
-
-    # ID4.pdf [1763007947392]
-    # box_movie_script = client.files.get_file_by_id("1763007947392")
-
-    # MINORITY REPORT - by Jon Cohen.pdf [1763017722640]
-    # box_movie_script = client.files.get_file_by_id("1763017722640")
-
-    # Oblivion.pdf [1763009435867]
-    # box_movie_script = client.files.get_file_by_id("1763009435867")
-
-    # Prometheus.pdf [1763001446271]
-    # box_movie_script = client.files.get_file_by_id("1763001446271")
-
-    # Strange-Days.pdf [1763005303100]
-    # box_movie_script = client.files.get_file_by_id("1763005303100")
+    box_movie_script = get_random_movie_script(client, ap.scripts_folder_id)
 
     # Get merge data for this document
     print(f"Getting merge data for {box_movie_script.name} [{box_movie_script.id}]")
     merge_data: MergeData = get_doc_gen_script_data_full(client, box_movie_script)
 
     # for reference let's write this data to a json file.
-    with open(f"{box_movie_script.name}_{box_movie_script.id}.json", "w") as f:
+    with open(f"output/{box_movie_script.name}_{box_movie_script.id}.json", "w") as f:
         f.write(merge_data.to_json(indent=4))
     print(f"Merge data written to {box_movie_script.name}.json")
 
