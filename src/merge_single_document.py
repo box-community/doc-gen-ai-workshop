@@ -49,8 +49,8 @@ def main() -> None:
     print("\n\n-- Box API --")
     print(f"Connected to Box API as {user.name}")
 
-    # source_data, file_name = get_random_movie_data()
-    source_data, file_name = get_sample_movie_data()
+    source_data, file_name = get_random_movie_data()
+    # source_data, file_name = get_sample_movie_data()
 
     movie_data = {}
     movie_data["script"] = source_data
