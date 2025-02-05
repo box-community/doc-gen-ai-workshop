@@ -5,7 +5,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-from api import MergeData, get_doc_gen_script_data_full
+from api import Script, get_doc_gen_script_data_full
 from client import AppConfig
 
 
@@ -50,7 +50,7 @@ def main() -> None:
 
             try:
                 progress_bar.write(f"Processing {box_file.name} [{box_file.id}]")
-                merge_data: MergeData = get_doc_gen_script_data_full(client, box_file)
+                merge_data: Script = get_doc_gen_script_data_full(client, box_file)
 
                 # Write this data to a json file
                 with output_file.open("w") as f:

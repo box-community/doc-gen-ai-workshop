@@ -48,7 +48,13 @@ def test_box_app_config_write_env_file():
     assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
     assert ap.conf.user_id == os.getenv("BOX_USER_ID")
 
-    ap.set_workshop_folder_ids("1", "2", "3", "4")
+    ap.set_workshop_folder_ids(
+        workshop_folder_id="1",
+        scripts_folder_id="2",
+        templates_folder_id="3",
+        doc_gen_template_file_id="4",
+        merge_folder_id="5",
+    )
     ap.write_env_file()
     ap.reload_dotenv()
 
@@ -58,13 +64,21 @@ def test_box_app_config_write_env_file():
     assert ap.workshop_folder_id == "1"
     assert ap.scripts_folder_id == "2"
     assert ap.templates_folder_id == "3"
+    assert ap.doc_gen_template_file_id == "4"
+    assert ap.merge_folder_id == "5"
 
     assert ap.conf.client_id == os.getenv("BOX_CLIENT_ID")
     assert ap.conf.client_secret == os.getenv("BOX_CLIENT_SECRET")
     assert ap.conf.enterprise_id == os.getenv("BOX_ENTERPRISE_ID")
     assert ap.conf.user_id == os.getenv("BOX_USER_ID")
 
-    ap.set_workshop_folder_ids("", "", "", "")
+    ap.set_workshop_folder_ids(
+        workshop_folder_id="",
+        scripts_folder_id="",
+        templates_folder_id="",
+        doc_gen_template_file_id="",
+        merge_folder_id="",
+    )
     ap.write_env_file()
     ap.reload_dotenv()
 

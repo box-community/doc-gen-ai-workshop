@@ -17,6 +17,12 @@ def test_api_file_folder_create_folder(app_config: AppConfig):
     assert box_sub_folder.name == "test_sub_folder"
     assert box_sub_folder.parent.id == box_folder.id
 
+    # create the folder again
+    box_folder_duplicate = create_folder(client, "test_folder", box_parent_folder)
+
+    assert box_folder_duplicate.name == "test_folder"
+    assert box_folder_duplicate.id == box_folder.id
+
     client.folders.delete_folder_by_id(box_folder.id, recursive=True)
 
 

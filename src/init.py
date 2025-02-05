@@ -3,7 +3,6 @@ import os
 from box_sdk_gen import (
     DocGenTemplateBaseV2025R0,
     FileReferenceV2025R0,
-    FileReferenceV2025R0TypeField,
 )
 from tqdm import tqdm
 
@@ -65,7 +64,7 @@ def main():
     local_files = [
         "sample_files/scripts/" + f for f in os.listdir("sample_files/scripts")
     ]
-    for local_file in tqdm(local_files, desc="Uploading scripts"):
+    for local_file in tqdm(local_files, desc="Uploading movie scripts"):
         upload_file(client, local_file, scripts_folder)
         # print(f"Uploaded file: {box_file.name}")
 

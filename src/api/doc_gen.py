@@ -6,7 +6,6 @@ from .ai import (
     get_ai_character_list,
     get_ai_director_recommendations,
     get_ai_producer_recommendations,
-    # get_ai_screen_writer,
     get_ai_script_data_extract,
     get_ai_smart_load,
 )
@@ -16,18 +15,16 @@ from .doc_gen_data_classes import (
     CompanyWorked,
     Director,
     Location,
-    MergeData,
     Movie,
     OtherScript,
     Producer,
     Script,
-    # Writer,
 )
 
 
 def get_doc_gen_script_data(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
+    box_client: BoxClient, file: File, merge_data: Script = None
+) -> Script:
     """returns the script data from the AI"""
 
     # Get script data
@@ -47,23 +44,22 @@ def get_doc_gen_script_data(
 
     script_data_dict = json.loads(script_data.answer)
 
-    # merge_data.script = Script.from_dict(script_data_dict)
-    merge_data.script = Script()
-    merge_data.script.title = script_data_dict.get("title")
-    merge_data.script.author = script_data_dict.get("author")
-    merge_data.script.genre = script_data_dict.get("genre")
-    merge_data.script.date_written = script_data_dict.get("date_written")
-    merge_data.script.date_written_iso = script_data_dict.get("date_written_iso")
-    merge_data.script.plot_summary = script_data_dict.get("plot_summary")
-    merge_data.script.props = script_data_dict.get("props")
-    # merge_data.script.locations = script_data_dict.get("locations")
+    if merge_data is None:
+        merge_data = Script()
+
+    merge_data.title = script_data_dict.get("title")
+    merge_data.author = script_data_dict.get("author")
+    merge_data.genre = script_data_dict.get("genre")
+    merge_data.date_written = script_data_dict.get("date_written")
+    merge_data.date_written_iso = script_data_dict.get("date_written_iso")
+    merge_data.plot_summary = script_data_dict.get("plot_summary")
 
     return merge_data
 
 
 def get_doc_gen_character_list(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
+    box_client: BoxClient, file: File, merge_data: Script = None
+) -> Script:
     """Returns the character list from the AI"""
 
     # Get character list
@@ -77,14 +73,18 @@ def get_doc_gen_character_list(
     script_character_list.answer = script_character_list.answer.replace("json", "")
 
     character_list = Character.schema().loads(script_character_list.answer, many=True)
+
+    if merge_data is None:
+        merge_data = Script()
+
     merge_data.character_list = character_list
 
     return merge_data
 
 
 def get_doc_gen_directors(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
+    box_client: BoxClient, file: File, merge_data: Script = None
+) -> Script:
     """Returns the director list from the AI"""
 
     # Get character list
@@ -98,14 +98,18 @@ def get_doc_gen_directors(
     script_directors.answer = script_directors.answer.replace("json", "")
 
     directors = Director.schema().loads(script_directors.answer, many=True)
+
+    if merge_data is None:
+        merge_data = Script()
+
     merge_data.directors = directors
 
     return merge_data
 
 
 def get_doc_gen_producers(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
+    box_client: BoxClient, file: File, merge_data: Script = None
+) -> Script:
     """Returns the producer list from the AI"""
 
     # Get character list
@@ -119,14 +123,16 @@ def get_doc_gen_producers(
     script_producers.answer = script_producers.answer.replace("json", "")
 
     producers = Producer.schema().loads(script_producers.answer, many=True)
+    if merge_data is None:
+        merge_data = Script()
     merge_data.producers = producers
 
     return merge_data
 
 
 def get_doc_gen_smart_load(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
+    box_client: BoxClient, file: File, merge_data: Script = None
+) -> Script:
     """Returns directors, producers and writer data from the AI"""
 
     ai_answer = get_ai_smart_load(box_client, file)
@@ -161,12 +167,16 @@ def get_doc_gen_smart_load(
     companies_worked_with = CompanyWorked.schema().loads(
         companies_worked_with_list, many=True
     )
-    merge_data.script.plot_summary = answer_dict.get("plot_summary")
+
+    if merge_data is None:
+        merge_data = Script()
+
+    merge_data.plot_summary = answer_dict.get("plot_summary")
     merge_data.directors = directors
     merge_data.producers = producers
-    # merge_data.screen_writer = writer
-    merge_data.script.locations = locations
-    merge_data.script.props = props
+    merge_data.locations = locations
+    merge_data.props = props
+    merge_data.locations = locations
     merge_data.accomplishments = accomplishments
     merge_data.other_scripts = other_scripts
     merge_data.produced_movies = produced_movies
@@ -176,9 +186,12 @@ def get_doc_gen_smart_load(
 
 
 def get_doc_gen_script_data_full(
-    box_client: BoxClient, file: File, merge_data: MergeData = MergeData()
-) -> MergeData:
+    box_client: BoxClient, file: File, merge_data: Script = None
+) -> Script:
     """Returns all the data from the AI"""
+
+    if merge_data is None:
+        merge_data = Script()
 
     merge_data = get_doc_gen_script_data(box_client, file, merge_data)
     merge_data = get_doc_gen_character_list(box_client, file, merge_data)

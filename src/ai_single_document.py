@@ -3,7 +3,7 @@ import random
 
 from box_sdk_gen import BoxClient, File
 
-from api import MergeData, get_doc_gen_script_data_full
+from api import Script, get_doc_gen_script_data_full
 from client import AppConfig
 
 
@@ -40,7 +40,7 @@ def main() -> None:
 
     # Get merge data for this document
     print(f"Getting merge data for {box_movie_script.name} [{box_movie_script.id}]")
-    merge_data: MergeData = get_doc_gen_script_data_full(client, box_movie_script)
+    merge_data: Script = get_doc_gen_script_data_full(client, box_movie_script)
 
     # for reference let's write this data to a json file.
     with open(f"output/{box_movie_script.name}_{box_movie_script.id}.json", "w") as f:

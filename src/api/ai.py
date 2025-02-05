@@ -25,14 +25,8 @@ def get_ai_character_list(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI character list of a Box file.
     """
+    sample_json_object = [Character.gen_sample_data()]
 
-    sample_json_object = [
-        Character(
-            name="Character Name",
-            description="Character Description",
-            suggested_actors="Actor 1, Actor 2, Actor 3, Actor 4, Actor 5",
-        )
-    ]
     mode = CreateAiAskMode.SINGLE_ITEM_QA
     prompt = (
         "read this movie script and give me a character list, "
@@ -206,28 +200,26 @@ def get_ai_script_data_extract(client: BoxClient, box_file: File) -> AiResponseF
     """
 
     script_schema = Script().json_schema()
-    # # Add min max elements to locations
-    # script_schema["allOf"][1]["properties"]["locations"]["minItems"] = 1
-    # script_schema["allOf"][1]["properties"]["locations"]["maxItems"] = 10
-
-    # # # Add min max elements to props
-    # script_schema["allOf"][1]["properties"]["props"]["minItems"] = 1
-    # script_schema["allOf"][1]["properties"]["props"]["maxItems"] = 10
-
-    # The AI seems to be hallucinating for locations and props
-    # so we will remove them from the schema and put them in the aks endpoint
-    # checking if locations and props exist in the schema
-
     properties = script_schema["allOf"][1]["properties"]
 
     if "plot_summary" in properties:
         properties.pop("plot_summary")
-
     if "locations" in properties:
         properties.pop("locations")
-
     if "props" in properties:
         properties.pop("props")
+    if "directors" in properties:
+        properties.pop("directors")
+    if "producers" in properties:
+        properties.pop("producers")
+    if "accomplishments" in properties:
+        properties.pop("accomplishments")
+    if "other_scripts" in properties:
+        properties.pop("other_scripts")
+    if "produced_movies" in properties:
+        properties.pop("produced_movies")
+    if "companies_worked_with" in properties:
+        properties.pop("companies_worked_with")
 
     prompt = f"{script_schema}"
     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)

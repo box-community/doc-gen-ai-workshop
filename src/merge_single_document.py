@@ -29,7 +29,7 @@ def get_sample_movie_data() -> str:
     Get a sample movie script from the local output/*.json folder.
     """
     # read Aliens - by James Cameron.pdf_1763008939159 in the output folder
-    json_file = "Aliens - by James Cameron.pdf_1763008939159.json"
+    json_file = "Aliens - by James Cameron.pdf_1767602238773.json"
 
     movie_data = json.load(open(f"output/{json_file}"))
     file_name = json_file.split(".")[0]
@@ -49,9 +49,11 @@ def main() -> None:
     print("\n\n-- Box API --")
     print(f"Connected to Box API as {user.name}")
 
-    source_data, file_name = get_random_movie_data()
+    # source_data, file_name = get_random_movie_data()
+    source_data, file_name = get_sample_movie_data()
+
     movie_data = {}
-    movie_data["data"] = source_data
+    movie_data["script"] = source_data
     # print(f"\n\n{json.dumps(movie_data, indent=4)}\n\n")
 
     # Read tags from template file

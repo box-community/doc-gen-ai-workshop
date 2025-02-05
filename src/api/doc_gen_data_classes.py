@@ -1,3 +1,4 @@
+import random
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Optional
@@ -44,64 +45,79 @@ class Movie(MergeBase):
     title: str = ""
     gross_revenue: str = ""
 
+    def gen_sample_data():
+        return Movie(
+            title=f"The {random.randint(1111, 9999)} movie name",
+            gross_revenue=f"{random.randint(100, 555)} million USD",
+        )
+
 
 @dataclass_json
 @dataclass
 class Accomplishment(GenericDescription):
-    pass
+    def gen_sample_data():
+        return Accomplishment(description=f"Accomplished {random.randint(1, 10)} times")
 
 
 @dataclass_json
 @dataclass
 class OtherScript(GenericDescription):
-    pass
+    def gen_sample_data():
+        return OtherScript(description=f"Script Z{random.randint(1, 10)}")
 
 
 @dataclass_json
 @dataclass
 class CompanyWorked(GenericDescription):
-    pass
-
-
-# TODO: Dead code, remove it
-# @dataclass_json
-# @dataclass
-# class Writer(MergeBase):
-#     name: str = ""
-#     accomplishments: list[Accomplishment] = None
-#     other_scripts: list[OtherScript] = None
-#     produced_movies: list[Movie] = None
-#     companies_worked_with: list[CompanyWorked] = None
+    def gen_sample_data():
+        return CompanyWorked(description=f"Company X{random.randint(1, 10)}")
 
 
 @dataclass_json
 @dataclass
 class Producer(GenericNameDescription):
-    pass
+    def gen_sample_data():
+        return Producer(
+            name=f"Producer {random.randint(1, 10)}",
+            description=f"Famous for Movie V{random.randint(1, 10)}",
+        )
 
 
 @dataclass_json
 @dataclass
 class Director(GenericNameDescription):
-    pass
+    def gen_sample_data():
+        return Director(
+            name=f"Director {random.randint(1, 10)}",
+            description=f"Famous for Movie Y{random.randint(1, 10)}",
+        )
 
 
 @dataclass_json
 @dataclass
 class Prop(GenericNameDescription):
-    pass
+    def gen_sample_data():
+        return Prop(
+            name=f"Prop {random.randint(1, 10)}",
+            description=f"X{random.randint(1, 10)} description",
+        )
 
 
 @dataclass_json
 @dataclass
 class Location(GenericNameDescription):
-    pass
+    def gen_sample_data():
+        return Location(
+            name=f"Location {random.randint(1, 10)}",
+            description=f"X{random.randint(1, 10)} description",
+        )
 
 
 @dataclass_json
 @dataclass
 class Actor(GenericDescription):
-    pass
+    def gen_sample_data():
+        return Actor(description=f"Actor {random.randint(1, 10)}")
 
 
 @dataclass_json
@@ -110,13 +126,13 @@ class Character(MergeBase):
     name: str = ""
     description: str = ""
     suggested_actors: str = ""
-    # suggested_actors: list[Actor] = field(
-    #     default=None,
-    #     metadata={
-    #         "description": "suggest 5 actors this character "
-    #         "do not suggest the original movie actors if the movie has been already produced."
-    #     },
-    # )
+
+    def gen_sample_data():
+        return Character(
+            name=f"Character {random.randint(1, 10)}",
+            description=f"Character {random.randint(1, 10)} description",
+            suggested_actors="Actor A, Actor B, Actor C",
+        )
 
 
 @dataclass_json
@@ -135,41 +151,31 @@ class Script(MergeBase):
             "description": "A summary of the plot of this movie script.",
         },
     )
-
-    locations: list[Location] = field(
-        default=None,
-        metadata={
-            "description": "read this movie script and give me a list of up to a maximum 10 locations "
-            "with one sentence description for each location "
-            "do not suggest the original movie locations if the movie has been already produced. "
-        },
-    )
-    props: Optional[list[Prop]] = field(
-        default=None,
-        metadata={
-            "description": "read this movie script and give me a list of up to 10 props "
-            "with one sentence description for each prop. "
-        },
-    )
-
-
-@dataclass_json
-@dataclass
-class MergeData(MergeBase):
-    script: Optional[Script] = None
-    character_list: Optional[list[Character]] = field(
-        default=None,
-        metadata={
-            "description": "read this movie script and give me a character list, "
-            "(without the original actor name, just the character name) "
-            "with one sentence description ",
-        },
-    )
-
+    character_list: Optional[list[Character]] = None
+    props: Optional[list[Prop]] = None
+    locations: Optional[list[Location]] = None
     directors: Optional[list[Director]] = None
     producers: Optional[list[Producer]] = None
-    # screen_writer: Optional[Writer] = None
     accomplishments: Optional[list[Accomplishment]] = None
     other_scripts: Optional[list[OtherScript]] = None
     produced_movies: Optional[list[Movie]] = None
     companies_worked_with: Optional[list[CompanyWorked]] = None
+
+    def gen_sample_data():
+        return Script(
+            title=f"Script {random.randint(1, 10)}",
+            author=f"Author {random.randint(1, 10)}",
+            genre=f"Genre {random.randint(1, 10)}",
+            date_written="April 1st, 2021",
+            date_written_iso=date(2021, 4, 1),
+            plot_summary=f"Plot summary {random.randint(1, 10)}",
+            character_list=[Character.gen_sample_data() for _ in range(3)],
+            props=[Prop.gen_sample_data() for _ in range(3)],
+            locations=[Location.gen_sample_data() for _ in range(3)],
+            directors=[Director.gen_sample_data() for _ in range(3)],
+            producers=[Producer.gen_sample_data() for _ in range(3)],
+            accomplishments=[Accomplishment.gen_sample_data() for _ in range(3)],
+            other_scripts=[OtherScript.gen_sample_data() for _ in range(3)],
+            produced_movies=[Movie.gen_sample_data() for _ in range(3)],
+            companies_worked_with=[CompanyWorked.gen_sample_data() for _ in range(3)],
+        )

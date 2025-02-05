@@ -67,7 +67,7 @@ def main() -> None:
 
         movie_data = {}
         with open(f"output/{file}") as f:
-            movie_data["data"] = json.load(f)
+            movie_data["script"] = json.load(f)
 
         # Create a document generation data object
         file_reference = FileReferenceV2025R0(ap.doc_gen_template_file_id)
