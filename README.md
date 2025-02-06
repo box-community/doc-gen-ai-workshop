@@ -66,7 +66,7 @@ For more information on topics related to this workshop, take a look at:
     python src/ai_single_document.py
     ```
 
-    This script will select a random movie script from the Box folder, process it using AI, and save the generated data to a JSON file in the [output](output/) folder.
+    This script will select a random movie script from the Box folder, process it using Box AI, and save the generated data to a JSON file in the [output](output/) folder.
 
 3. **Run [merge_single_document.py](src/merge_single_document.py) to merge the processed document:**
 
@@ -74,7 +74,7 @@ For more information on topics related to this workshop, take a look at:
     python src/merge_single_document.py
     ```
 
-    This script will merge the processed document data into a single PDF file using the Box API.
+    This script will merge the processed document data into a single PDF file using the Box Doc Gen.
 
 ## Additional Information
 
