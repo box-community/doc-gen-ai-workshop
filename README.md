@@ -38,7 +38,7 @@ This project is a workshop for generating documents using AI and the Box API. It
 
 ## Initial Run Instructions
 
-1. **Run [init.py](http://_vscodecontentref_/5) to set up the Box folder structure and upload the template:**
+1. **Run [init.py](src/init.py) to set up the Box folder structure and upload the template:**
 
     ```sh
     python src/init.py
@@ -46,15 +46,15 @@ This project is a workshop for generating documents using AI and the Box API. It
 
     This script will create the necessary folder structure in your Box account and upload the template file.
 
-2. **Run [ai_single_document.py](http://_vscodecontentref_/6) to process a single document:**
+2. **Run [ai_single_document.py](src/ai_single_document.py) to process a single document:**
 
     ```sh
     python src/ai_single_document.py
     ```
 
-    This script will select a random movie script from the Box folder, process it using AI, and save the generated data to a JSON file in the [output](http://_vscodecontentref_/7) folder.
+    This script will select a random movie script from the Box folder, process it using AI, and save the generated data to a JSON file in the [output](output/) folder.
 
-3. **Run [merge_single_document.py](http://_vscodecontentref_/8) to merge the processed document:**
+3. **Run [merge_single_document.py](src/merge_single_document.py) to merge the processed document:**
 
     ```sh
     python src/merge_single_document.py
@@ -64,7 +64,7 @@ This project is a workshop for generating documents using AI and the Box API. It
 
 ## Additional Information
 
-- The [ai_all_documents.py](http://_vscodecontentref_/9) script can be used to process all documents in the Box folder.
-- The [merge_all_documents.py](http://_vscodecontentref_/10) script can be used to merge all processed documents into a single PDF file.
+- The [ai_all_documents.py](src/ai_all_documents.py) script can be used to process all documents in the Box folder.
+- The [merge_all_documents.py](src/merge_all_documents.py) script can be used to merge all processed documents into a single PDF file.
 
 For more details, refer to the source code and comments within each script.
