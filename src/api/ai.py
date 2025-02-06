@@ -81,42 +81,6 @@ def get_ai_producer_recommendations(
     return client.ai.create_ai_ask(mode, prompt, [item])
 
 
-# def get_ai_screen_writer(client: BoxClient, box_file: File) -> AiResponseFull:
-#     """
-#     Get AI screen writer of a Box file.
-#     """
-#     sample_json_object = Writer(name="Writer Name")
-#     sample_json_object.accomplishments = [
-#         {"description": "Accomplishment 1"},
-#         {"description": "Accomplishment 2"},
-#     ]
-#     sample_json_object.other_scripts = [
-#         {"description": "Script 1"},
-#         {"description": "Script 2"},
-#     ]
-#     sample_json_object.produced_movies = [
-#         {"title": "Movie 1", "gross_revenue": "1000000"},
-#         {"title": "Movie 2", "gross_revenue": "2000000"},
-#     ]
-#     sample_json_object.companies_worked_with = [
-#         {"description": "Company 1"},
-#         {"description": "Company 2"},
-#     ]
-
-#     mode = CreateAiAskMode.SINGLE_ITEM_QA
-#     prompt = (
-#         "read this movie script and provide me information on the script writer "
-#         "include other scrips the screen writer has written "
-#         "and a summary of accomplishments. "
-#         "If the screen writer does have movies that were produced, "
-#         "Include a separate bullet list summary of grossed revenue for each past movie. "
-#         "Include a separate bullet list of the companies the screen writer has worked with. "
-#         f"format the output this directors list in a json format using this example: {sample_json_object}"
-#     )
-#     item = AiItemBase(id=box_file.id, type=AiItemBaseTypeField.FILE)
-#     return client.ai.create_ai_ask(mode, prompt, [item])
-
-
 def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
     """
     Get AI smart load of a Box file.
@@ -149,7 +113,6 @@ def get_ai_smart_load(client: BoxClient, box_file: File) -> AiResponseFull:
     sample_dict = {}
     sample_dict["directors"] = directors
     sample_dict["producers"] = producers
-    # sample_dict["writer"] = writer
     sample_dict["locations"] = locations
     sample_dict["props"] = props
     sample_dict["accomplishments"] = accomplishments
