@@ -7,11 +7,10 @@ This project is a workshop for generating documents using AI and the Box API. It
 This workshop assumes you are somewhat familiar with the Box API, Box Applications, and types of authentication supported.
 
 
-For more information on these topics:
+For more information on topics related to this workshop, take a look at:
 
 - [Getting started](https://developer.box.com/guides/getting-started/)
 - [Authentication](https://developer.box.com/guides/authentication/)
-- [Authorization](https://developer.box.com/guides/authorization/)
 - [Box AI](https://developer.box.com/guides/box-ai/)
 - [Box Doc Gen](https://developer.box.com/guides/docgen/)
 
