@@ -2,6 +2,18 @@
 
 This project is a workshop for generating documents using AI and the Box API. It includes scripts for initializing the environment, processing a single document, and merging documents.
 
+## Pre-requisites and guide
+
+This workshop assumes you are somewhat familiar with the Box API, Box Applications, and types of authentication supported.
+
+
+For more information on these topics:
+    - [Getting started](https://developer.box.com/guides/getting-started/)
+    - [Authentication](https://developer.box.com/guides/authentication/)
+    - [Authorization](https://developer.box.com/guides/authorization/)
+    - [Box AI](https://developer.box.com/guides/box-ai/)
+    - [Box Doc Gen](https://developer.box.com/guides/docgen/)
+
 ## Setup Instructions
 
 1. **Clone the repository:**
@@ -35,6 +47,7 @@ This project is a workshop for generating documents using AI and the Box API. It
     BOX_USER_ID=your_box_user_id
     BOX_WORKSHOP_PARENT_FOLDER_ID=your_box_workshop_parent_folder_id
     ```
+    This assumes you have created a Box application, configured to use Client Credential Grant (CCG), have Box AI and Doc Gen enabled. 
 
 ## Initial Run Instructions
 
@@ -45,6 +58,7 @@ This project is a workshop for generating documents using AI and the Box API. It
     ```
 
     This script will create the necessary folder structure in your Box account and upload the template file.
+
 
 2. **Run [ai_single_document.py](src/ai_single_document.py) to process a single document:**
 
