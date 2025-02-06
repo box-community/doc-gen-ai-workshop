@@ -104,9 +104,6 @@ This file contains functions to generate document data using AI. It includes fun
 
 ### `src/api/doc_gen_data_classes.py`
 This file contains data classes used in the document generation process. These classes define the structure of the data used in the scripts. The main classes are:
-- `MergeBase`: Base class for all data classes.
-- `GenericNameDescription`: Class for objects with a name and description.
-- `GenericDescription`: Class for objects with a description.
 - `Movie`: Class representing a movie with a title and gross revenue.
 - `Accomplishment`: Class representing an accomplishment.
 - `OtherScript`: Class representing another script.
