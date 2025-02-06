@@ -1,4 +1,4 @@
-# doc-gen-ai-workshop
+# Automating document analysis with Box AI and Document Generation
 
 This project is a workshop for generating documents using AI and the Box API. It includes scripts for initializing the environment, processing a single document, and merging documents.
 
@@ -26,7 +26,7 @@ This project is a workshop for generating documents using AI and the Box API. It
 
 4. **Set up environment variables:**
 
-    Create a [.env](http://_vscodecontentref_/4) file in the root directory of the project and add the following environment variables:
+    Create a `.env` file in the root directory of the project and add the following environment variables:
 
     ```env
     BOX_CLIENT_ID=your_box_client_id
