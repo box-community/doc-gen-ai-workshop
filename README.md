@@ -2,17 +2,18 @@
 
 This project is a workshop for generating documents using AI and the Box API. It includes scripts for initializing the environment, processing a single document, and merging documents.
 
-## Pre-requisites and guide
+## Pre-requisites and guides
 
 This workshop assumes you are somewhat familiar with the Box API, Box Applications, and types of authentication supported.
 
 
 For more information on these topics:
-    - [Getting started](https://developer.box.com/guides/getting-started/)
-    - [Authentication](https://developer.box.com/guides/authentication/)
-    - [Authorization](https://developer.box.com/guides/authorization/)
-    - [Box AI](https://developer.box.com/guides/box-ai/)
-    - [Box Doc Gen](https://developer.box.com/guides/docgen/)
+
+- [Getting started](https://developer.box.com/guides/getting-started/)
+- [Authentication](https://developer.box.com/guides/authentication/)
+- [Authorization](https://developer.box.com/guides/authorization/)
+- [Box AI](https://developer.box.com/guides/box-ai/)
+- [Box Doc Gen](https://developer.box.com/guides/docgen/)
 
 ## Setup Instructions
 
